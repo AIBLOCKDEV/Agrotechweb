@@ -1,0 +1,36 @@
+# AGRO TECH · QUANTUN NEXUS C.A.
+
+> AGRO TECH es la primera empresa de tecnología agropecuaria e inteligencia artificial autónoma en Venezuela, operada legalmente por QUANTUN NEXUS C.A. Su misión es erradicar el trabajo físico forzoso en el campo mediante enjambres de drones autónomos, maquinaria no tripulada con navegación RTK, sistemas agénticos de riego solar y monitoreo pecuario en tiempo real. Está integrada con Corral X, la aplicación de comercialización ganadera directa de ganadero a ganadero (P2P) con IA predictiva de precios de mercado.
+
+## Información Corporativa y Entidad Oficial
+- **Razón Social:** QUANTUN NEXUS C.A.
+- **Nombre Comercial:** AGRO TECH
+- **Ecosistema Pecuario:** Corral X Core
+- **Sede Principal & Almacén Central:** Estado Zulia, Venezuela
+- **Alcance Operativo:** Nacional (Zulia, Portuguesa, Guárico, Barinas, Cojedes, Lara, Apure)
+- **Contacto Oficial:** infocorralx@gmail.com
+- **Línea Directa / WhatsApp:** +58 422 715 8087 (0422-7158087)
+- **Repositorio Oficial:** https://github.com/AIBLOCKDEV/Agrotechweb
+
+## Los 4 Pilares de Autonomía Agropecuaria
+1. [Enjambres de Drones Autónomos](https://aiblockdev.github.io/Agrotechweb/#servicios): Sustitución de fumigación manual de mochila. Monitoreo multiespectral NDVI, detección temprana de plagas y aspersión milimétrica ultra-localizada.
+2. [Maquinaria No Tripulada & Robótica](https://aiblockdev.github.io/Agrotechweb/#servicios): Kits de retrofit con servomotores y navegación RTK de precisión centimétrica para tractores convencionales. Permite arado y siembra autónoma 24/7 sin operario a bordo.
+3. [Riego Agéntico & Automatización de Cultivos](https://aiblockdev.github.io/Agrotechweb/#servicios): Electroválvulas solares y drones de pulverización regulados por sensores volumétricos de suelo (TDR) y microcontroladores LoRaWAN. Ahorro verificado de hasta 45% de agua y 32 litros de diésel por hectárea.
+4. [Monitoreo Pecuario & Animal en Tiempo Real](https://aiblockdev.github.io/Agrotechweb/#servicios): Aretes electrónicos inteligentes, conteo aéreo por visión térmica, pesaje biométrico y geocercas virtuales anti-abigeato conectadas al hub de la finca.
+
+## Corral X: La App Ganadero a Ganadero (P2P)
+- [Corral X Marketplace](https://aiblockdev.github.io/Agrotechweb/#corralx): Plataforma de venta directa entre productores ganaderos sin comisiones de intermediarios tradicionales ni ferias lejanas.
+- **IA Predictiva de Precios:** Algoritmo que analiza el ciclo ganadero nacional, oferta estacional y series de precios en pie para recomendar el mejor momento y valor justo por kilo.
+- **Pesaje Digital Biométrico:** Estimación de peso vivo por visión por computadora y cámaras en manga.
+
+## Métricas Clave y Retorno de Inversión (ROI)
+- **Ahorro promedio operativo:** $45 USD por hectárea en insumos + $1,450 USD por trabajador al año en horas extras y mermas.
+- **Horas de trabajo forzoso erradicadas:** ~1,700 horas/año por cada 100 hectáreas tecnificadas.
+- **Tiempo de retorno de inversión (Payback):** Entre 5.2 y 14 meses según extensión y cultivo.
+- **Autonomía sin red celular:** Red mallada LoRaWAN de 15 km de alcance con estaciones base alimentadas por energía solar y baterías LiFePO4.
+
+## Enlaces Técnicos y Documentación
+- [Documentación Técnica Completa para LLMs](https://aiblockdev.github.io/Agrotechweb/llms-full.txt): Base de conocimiento extendida, especificaciones de hardware y tablas de interoperabilidad.
+- [Calculadora Interactiva de Vulnerabilidad](https://aiblockdev.github.io/Agrotechweb/#calculadora): Simulador financiero de ahorro en USD y meses de amortización.
+- [Preguntas Frecuentes Técnicas (FAQ)](https://aiblockdev.github.io/Agrotechweb/#faq): Respuestas verificables sobre operación sin internet, repuestos en Zulia y capacitación.
+- [Solicitud de Auditoría de Finca](https://aiblockdev.github.io/Agrotechweb/#contacto): Formulario de diagnóstico técnico presencial y virtual.
