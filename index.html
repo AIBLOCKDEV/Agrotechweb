@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F3EE">
+  <meta name="format-detection" content="telephone=no">
+  <title>AGRO TECH · Primera Empresa AgroTech de Venezuela | Potenciada por Corral X</title>
+  <meta name="description" content="Automatización del campo venezolano, enjambres de drones, maquinaria no tripulada y relevo generacional con Inteligencia Artificial Agéntica. Potenciada por Corral X.">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css?v=2026.14">
+</head>
+<body>
+
+  <!-- Ambient Floating Grass & Breeze Canvas (Full Page Organic Motion) -->
+  <canvas id="ambientGrassCanvas" class="ambient-grass-canvas" aria-hidden="true"></canvas>
+
+  <!-- Easter Egg: Flying Drone Flock Canvas ("Drones como Pajaritos") -->
+  <canvas id="droneFlockCanvas" class="drone-flock-canvas" aria-hidden="true"></canvas>
+
+  <!-- Easter Egg Notification Toast -->
+  <div id="droneFlockToast" class="easter-egg-toast" aria-live="polite">
+    <span class="status-dot" style="background: #4ADE80; box-shadow: 0 0 8px #4ADE80;"></span>
+    <span>[EASTER EGG // 🛸 ENJAMBRE ACTIVADO: MICRO-DRONES MODO AVES 🐦✨]</span>
+  </div>
+
+  <!-- ==========================================================================
+       Header & Navigation (Centro de Mando E-Ink 2026)
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-bar">
+        <!-- Brand Logo & Entity -->
+        <a href="#hero" class="brand-wrapper" aria-label="AGRO TECH - Inicio">
+          <svg class="brand-sprout" viewBox="0 0 90 90" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(45, 52)">
+              <path d="M 0,32 Q -1,15 -3,0" stroke="#345C33" stroke-width="6" stroke-linecap="round" fill="none" />
+              <path d="M -3,0 C -18,-2 -34,-12 -38,-28 C -36,-38 -20,-42 -4,-28 C 4,-20 0,-5 -3,0 Z" fill="#345C33" />
+              <path d="M -4,-2 C -15,-12 -26,-24 -32,-30" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6" />
+              <path d="M -3,0 C 14,-2 32,-14 36,-32 C 34,-42 16,-46 0,-30 C -8,-22 -3,-5 -3,0 Z" fill="#345C33" />
+              <path d="M -3,-2 C 12,-12 24,-24 30,-32" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6" />
+            </g>
+          </svg>
+          <div class="brand-text-block">
+            <span class="brand-name">AGRO TECH</span>
+            <span class="brand-sub-badge">QUANTUN NEXUS C.A.</span>
+          </div>
+        </a>
+
+        <!-- Minimalist Center Dock (Direct Access on Desktop) -->
+        <div class="nav-center-dock" aria-label="Navegación directa">
+          <a href="#servicios" class="dock-pill">Soluciones IA</a>
+          <span class="dock-bullet">·</span>
+          <a href="#corralx" class="dock-pill">Corral X</a>
+          <span class="dock-bullet">·</span>
+          <a href="#calculadora" class="dock-pill">Calculadora ROI</a>
+        </div>
+
+        <!-- Tactical Nav Actions -->
+        <div class="nav-actions">
+          <!-- Tactile Dual-State E-Ink Switch (Papel / Carbón) - ALWAYS VISIBLE ON ALL DEVICES -->
+          <button id="themeToggleBtn" class="eink-mode-switch" role="switch" aria-checked="false" title="Alternar modo de pantalla E-Ink: Papel Claro o Carbón Oscuro" aria-label="Cambiar modo E-Ink Papel / Carbón">
+            <span class="mode-opt mode-paper active" id="badgePaper">
+              <span class="mode-icon">📜</span>
+              <span class="mode-text">PAPEL</span>
+            </span>
+            <span class="mode-sep">/</span>
+            <span class="mode-opt mode-carbon" id="badgeCarbon">
+              <span class="mode-icon">⬛</span>
+              <span class="mode-text">CARBÓN</span>
+            </span>
+          </button>
+
+          <!-- Creative Blueprint Matrix Trigger (Replaces the generic hamburger!) -->
+          <button id="blueprintMenuToggle" class="tactical-matrix-trigger" aria-label="Abrir matriz técnica e índice de navegación" aria-expanded="false">
+            <span class="matrix-glyph" aria-hidden="true">
+              <span class="m-point p1"></span>
+              <span class="m-point p2"></span>
+              <span class="m-point p3"></span>
+              <span class="m-point p4"></span>
+            </span>
+            <span class="matrix-label" id="matrixBtnLabel">ÍNDICE</span>
+            <span class="matrix-shortcut" title="Atajo de teclado">[M]</span>
+          </button>
+
+          <!-- Fast Auditoría Action on Desktop -->
+          <a href="#contacto" class="btn btn-primary btn-sm desktop-auditoria-btn">Auditoría</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- The Tactical Blueprint Navigation Matrix (Matriz Técnica de Navegación E-Ink) -->
+  <div id="blueprintMatrixOverlay" class="blueprint-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Matriz Técnica de Navegación">
+    <div class="blueprint-backdrop" id="blueprintBackdrop"></div>
+    <div class="blueprint-dialog">
+      <!-- Matrix Top Bar -->
+      <div class="blueprint-topbar">
+        <div class="blueprint-meta">
+          <span class="blueprint-live-status">
+            <span class="status-dot"></span>
+            <span>SISTEMA AGÉNTICO // MATRIZ GENERAL</span>
+          </span>
+          <span class="blueprint-tag">SEDE PRINCIPAL: ESTADO ZULIA · QUANTUN NEXUS C.A.</span>
+        </div>
+        <button id="closeBlueprintBtn" class="blueprint-close-btn" aria-label="Cerrar matriz técnica">
+          <span>CERRAR</span>
+          <span class="close-x">✕</span>
+          <span class="key-shortcut">[ESC]</span>
+        </button>
+      </div>
+
+      <!-- Matrix Systems Grid: 8 Technical Cards -->
+      <div class="blueprint-cards-grid">
+        <a href="#crisis" class="matrix-card" data-card-idx="01">
+          <div class="mcard-header">
+            <span class="mcard-idx">01 // DIAGNÓSTICO</span>
+            <span class="mcard-arrow">→</span>
+          </div>
+          <div class="mcard-title">Crisis & Relevo Generacional</div>
+          <p class="mcard-desc">Análisis demográfico del campo venezolano y erradicación del trabajo forzoso.</p>
+        </a>
+
+        <a href="#servicios" class="matrix-card" data-card-idx="02">
+          <div class="mcard-header">
+            <span class="mcard-idx">02 // ROBÓTICA</span>
+            <span class="mcard-arrow">→</span>
+          </div>
+          <div class="mcard-title">Soluciones IA & Enjambres</div>
+          <p class="mcard-desc">Drones multiespectrales NDVI, tractores RTK autónomos y riego solar con sensores.</p>
+        </a>
+
+        <a href="#corralx" class="matrix-card highlight-pecuario" data-card-idx="03">
+          <div class="mcard-header">
+            <span class="mcard-idx">03 // APP PECUARIA P2P</span>
+            <span class="mcard-arrow">→</span>
+          </div>
+          <div class="mcard-title">Corral X · Venta Ganadero a Ganadero</div>
+          <p class="mcard-desc">Conexión directa sin intermediarios con IA predictiva de precios del ganado.</p>
+        </a>
+
+        <a href="#calculadora" class="matrix-card" data-card-idx="04">
+          <div class="mcard-header">
+            <span class="mcard-idx">04 // SIMULADOR FINANCIERO</span>
+            <span class="mcard-arrow">→</span>
+          </div>
+          <div class="mcard-title">Calculadora de Vulnerabilidad & ROI</div>
+          <p class="mcard-desc">Proyección del ahorro operativo anual en USD y tiempo de retorno de inversión.</p>
+        </a>
+
+        <a href="#testimonios" class="matrix-card" data-card-idx="05">
+          <div class="mcard-header">
+            <span class="mcard-idx">05 // VOCES DEL CAMPO</span>
+            <span class="mcard-arrow">→</span>
+          </div>
+          <div class="mcard-title">Casos de Éxito de Productores</div>
+          <p class="mcard-desc">Testimonios reales de rendimiento y rentabilidad en Portuguesa, Guárico y Zulia.</p>
+        </a>
+
+        <a href="#telemetria" class="matrix-card" data-card-idx="06">
+          <div class="mcard-header">
+            <span class="mcard-idx">06 // MISIÓN ACTIVA</span>
+            <span class="mcard-arrow">→</span>
+          </div>
+          <div class="mcard-title">Telemetría HUD en Vivo</div>
+          <p class="mcard-desc">Consola en tiempo real con decisiones autónomas ejecutadas por los agentes.</p>
+        </a>
+
+        <a href="#faq" class="matrix-card" data-card-idx="07">
+          <div class="mcard-header">
+            <span class="mcard-idx">07 // PREGUNTAS TÉCNICAS</span>
+            <span class="mcard-arrow">→</span>
+          </div>
+          <div class="mcard-title">Preguntas Frecuentes (FAQ)</div>
+          <p class="mcard-desc">Operación sin internet satelital, estaciones solares y repuestos físicos en Zulia.</p>
+        </a>
+
+        <div class="matrix-card action-dossier-card" id="openDossierFromMatrix" role="button" tabindex="0" data-card-idx="08">
+          <div class="mcard-header">
+            <span class="mcard-idx">08 // ESPECIFICACIONES</span>
+            <span class="mcard-arrow">↗</span>
+          </div>
+          <div class="mcard-title">Dossier Técnico Ejecutivo 2026 📄</div>
+          <p class="mcard-desc">Tablas de hardware, protocolos de implementación y descarga en formato PDF.</p>
+        </div>
+      </div>
+
+      <!-- Matrix Bottom Dock -->
+      <div class="blueprint-bottom-dock">
+        <div class="blueprint-channels">
+          <a href="https://wa.me/584227158087" target="_blank" class="channel-pill">
+            <span>💬 WhatsApp: 0422-7158087</span>
+          </a>
+          <a href="mailto:infocorralx@gmail.com" class="channel-pill">
+            <span>✉️ infocorralx@gmail.com</span>
+          </a>
+        </div>
+        <a href="#contacto" class="btn btn-primary btn-sm blueprint-cta-btn" id="matrixCtaBtn">
+          Solicitar Auditoría de Finca →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Ticker Bar: Telemetry Stream
+       ========================================================================== -->
+  <div class="ticker-bar">
+    <div class="ticker-track">
+      <div class="ticker-item"><span class="status-dot"></span> RED NACIONAL AGRO TECH: OPERATIVA EN 6 ESTADOS PRODUCTIVOS</div>
+      <div class="ticker-item">PORTUGUESA: <span class="ticker-highlight">2,480 Ha MONITOREADAS POR DRON</span></div>
+      <div class="ticker-item">GUÁRICO: <span class="ticker-highlight">SISTEMA DE RIEGO AGÉNTICO AHORRANDO 42% DE AGUA</span></div>
+      <div class="ticker-item">BARINAS: <span class="ticker-highlight">CORRAL X LIVE: 1,850 RESES CON TELEMETRÍA BIOMÉTRICA</span></div>
+      <div class="ticker-item">ZULIA: <span class="ticker-highlight">MAQUINARIA NO TRIPULADA EN LABRANZA NOCTURNA</span></div>
+      <div class="ticker-item"><span class="status-dot"></span> SOBERANÍA ALIMENTARIA BASADA EN INTELIGENCIA ARTIFICIAL</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="ticker-item"><span class="status-dot"></span> RED NACIONAL AGRO TECH: OPERATIVA EN 6 ESTADOS PRODUCTIVOS</div>
+      <div class="ticker-item">PORTUGUESA: <span class="ticker-highlight">2,480 Ha MONITOREADAS POR DRON</span></div>
+      <div class="ticker-item">GUÁRICO: <span class="ticker-highlight">SISTEMA DE RIEGO AGÉNTICO AHORRANDO 42% DE AGUA</span></div>
+      <div class="ticker-item">BARINAS: <span class="ticker-highlight">CORRAL X LIVE: 1,850 RESES CON TELEMETRÍA BIOMÉTRICA</span></div>
+      <div class="ticker-item">ZULIA: <span class="ticker-highlight">MAQUINARIA NO TRIPULADA EN LABRANZA NOCTURNA</span></div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ==========================================================================
+         Hero Section: High Impact Narrative
+         ========================================================================== -->
+    <section id="hero" class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-telemetry-header">
+              <span class="telemetry-pill"><span class="status-dot"></span> AGRO TECH 2026</span>
+              <span class="telemetry-pill">POTENCIADO POR CORRAL X</span>
+              <span class="telemetry-pill">VENEZUELA</span>
+            </div>
+
+            <h1 class="hero-headline">
+              EL CAMPO NO TIENE QUIÉN LO TRABAJE.<br>
+              O LO <span class="highlight">AUTOMATIZAMOS HOY</span>, O EL PAÍS DEJA DE PRODUCIR MAÑANA.
+            </h1>
+
+            <p class="hero-subhead">
+              Somos la <strong>primera empresa AgroTech de Venezuela</strong>. Erradicamos el trabajo forzoso humano mediante <strong>enjambres de drones autónomos, riego agéntico de precisión y maquinaria no tripulada con IA</strong>. Devolvemos la rentabilidad y el relevo generacional a la tierra para blindar la <strong>soberanía alimentaria</strong> de la nación.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#contacto" class="btn btn-primary btn-lg">
+                <span>Solicitar Auditoría de Finca</span>
+                <span>→</span>
+              </a>
+              <a href="#calculadora" class="btn btn-outline btn-lg">
+                <span>Calcular Riesgo de Relevo</span>
+              </a>
+            </div>
+
+            <div class="hero-guarantee">
+              <span>[!] TECNOLOGÍA PROBADA EN CONDICIONES REALES DE LOS LLANOS Y OCCIDENTE VENEZOLANO</span>
+            </div>
+          </div>
+
+          <!-- Hero Media Box -->
+          <div class="hero-media-box">
+            <span class="corner-cross corner-tl">+</span>
+            <span class="corner-cross corner-tr">+</span>
+            <span class="corner-cross corner-bl">+</span>
+            <span class="corner-cross corner-br">+</span>
+
+            <div class="media-telemetry-overlay">
+              <span>TELEMETRÍA AGÉNTICA // DRON VZLA-01</span>
+              <span>ESTADO: PATRULLAJE ACTIVO</span>
+            </div>
+
+            <img src="assets/images/hero-drone.jpg" alt="Dron agrícola autónomo sobre campos de Venezuela" class="hero-image" width="1376" height="768" fetchpriority="high" loading="eager">
+
+            <div class="media-bottom-overlay">
+              <span>RES. MULTIESPECTRAL: NDVI OPT</span>
+              <span>ALT: 12M | SAT: 100% OK</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Procedural Grass Divider (Hero Ground) -->
+    <div class="section-grass-divider">
+      <canvas id="heroGrassCanvas" class="interactive-grass-canvas" aria-hidden="true"></canvas>
+    </div>
+
+    <!-- ==========================================================================
+         The Generational Crisis & Alarming Reality
+         ========================================================================== -->
+    <section id="crisis" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label"><span class="status-dot red"></span> DIAGNÓSTICO DE EMERGENCIA RURAL</span>
+          <h2 class="section-title">EL ABISMO DEMOGRÁFICO: EL CAMPO SE QUEDA SIN MANOS</h2>
+          <p class="section-desc">
+            La migración, el éxodo juvenil y el agotamiento físico amenazan la existencia misma de la producción agropecuaria venezolana. Los datos no mienten: o transformamos el agro en una industria autónoma de alta tecnología, o la tierra quedará baldía.
+          </p>
+        </div>
+
+        <div class="crisis-grid">
+          <div class="crisis-card alert-card">
+            <div class="crisis-num">57.4</div>
+            <div class="crisis-label">AÑOS · EDAD PROMEDIO</div>
+            <div class="crisis-desc">
+              La edad media del productor agropecuario en Venezuela supera el medio siglo. Menos del 11% de los jóvenes rurales están dispuestos a heredar el modelo tradicional.
+            </div>
+            <svg class="corner-grass corner-grass-br" width="28" height="28" viewBox="0 0 40 40" fill="currentColor"><path d="M40,40 Q25,35 15,20 Q8,10 0,0 Q12,12 25,25 Q32,32 40,40 Z" opacity="0.8"/><path d="M40,40 Q30,28 22,12 Q18,4 12,0 Q20,15 28,28 Q34,34 40,40 Z" opacity="0.6"/><path d="M40,40 Q35,32 30,22 Q26,14 24,6 Q28,20 34,30 Q37,35 40,40 Z" opacity="0.9"/></svg>
+          </div>
+
+          <div class="crisis-card alert-card">
+            <div class="crisis-num">68%</div>
+            <div class="crisis-label">DESERCIÓN JUVENIL</div>
+            <div class="crisis-desc">
+              Las nuevas generaciones no abandonan la tierra por falta de amor a su país, sino por rechazo al <strong>trabajo físico extenuante, arcaico y poco rentable</strong>.
+            </div>
+            <svg class="corner-grass corner-grass-br" width="28" height="28" viewBox="0 0 40 40" fill="currentColor"><path d="M40,40 Q25,35 15,20 Q8,10 0,0 Q12,12 25,25 Q32,32 40,40 Z" opacity="0.8"/><path d="M40,40 Q30,28 22,12 Q18,4 12,0 Q20,15 28,28 Q34,34 40,40 Z" opacity="0.6"/><path d="M40,40 Q35,32 30,22 Q26,14 24,6 Q28,20 34,30 Q37,35 40,40 Z" opacity="0.9"/></svg>
+          </div>
+
+          <div class="crisis-card">
+            <div class="crisis-num">-45%</div>
+            <div class="crisis-label">DÉFICIT DE MANO DE OBRA</div>
+            <div class="crisis-desc">
+              Fincas enteras en Portuguesa, Guárico y Barinas pierden ventanas de siembra o cosecha por falta de cuadrillas para labores manuales forzosas.
+            </div>
+            <svg class="corner-grass corner-grass-br" width="28" height="28" viewBox="0 0 40 40" fill="currentColor"><path d="M40,40 Q25,35 15,20 Q8,10 0,0 Q12,12 25,25 Q32,32 40,40 Z" opacity="0.8"/><path d="M40,40 Q30,28 22,12 Q18,4 12,0 Q20,15 28,28 Q34,34 40,40 Z" opacity="0.6"/><path d="M40,40 Q35,32 30,22 Q26,14 24,6 Q28,20 34,30 Q37,35 40,40 Z" opacity="0.9"/></svg>
+          </div>
+
+          <div class="crisis-card">
+            <div class="crisis-num">100%</div>
+            <div class="crisis-label">SOBERANÍA RECUPERABLE</div>
+            <div class="crisis-desc">
+              Con Inteligencia Artificial Agéntica, un solo operador joven gestiona cientos de hectáreas desde una tablet, sustituyendo el sudor forzado por telemetría.
+            </div>
+            <svg class="corner-grass corner-grass-br" width="28" height="28" viewBox="0 0 40 40" fill="currentColor"><path d="M40,40 Q25,35 15,20 Q8,10 0,0 Q12,12 25,25 Q32,32 40,40 Z" opacity="0.8"/><path d="M40,40 Q30,28 22,12 Q18,4 12,0 Q20,15 28,28 Q34,34 40,40 Z" opacity="0.6"/><path d="M40,40 Q35,32 30,22 Q26,14 24,6 Q28,20 34,30 Q37,35 40,40 Z" opacity="0.9"/></svg>
+          </div>
+        </div>
+
+        <!-- The Manifesto Box -->
+        <div class="manifesto-box">
+          <div class="manifesto-quote">
+            “No le exijas a un joven que vuelva al siglo XIX a romper su espalda con un machete. Dale el control de enjambres autónomos y crearás a los líderes más prósperos del país.”
+          </div>
+          <div class="manifesto-body">
+            <p>
+              La supervivencia humana depende de quienes producen comida. Sin embargo, en Venezuela y América Latina, el campo ha sido asociado históricamente al castigo físico, a la incertidumbre del clima y a la soledad técnica.
+            </p>
+            <p>
+              <strong>AGRO TECH nació para romper esta maldición.</strong> Potenciados por la plataforma agéntica <strong>Corral X</strong>, traemos la revolución de la robótica y la inteligencia artificial para que producir carne, leche, maíz y café sea una profesión de vanguardia tecnológica, atractiva para los jóvenes y blindada contra la escasez de mano de obra.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Services & Technological Pillars
+         ========================================================================== -->
+    <section id="servicios" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label"><span class="status-dot"></span> ARQUITECTURA DE AUTONOMÍA</span>
+          <h2 class="section-title">TECNOLOGÍAS PARA SUSTITUIR EL TRABAJO FORZOSO</h2>
+          <p class="section-desc">
+            Desplegamos hardware robusto, microcontroladores solares y algoritmos agénticos diseñados para resistir las condiciones más exigentes del campo venezolano.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <!-- Pillar 1 -->
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="assets/images/hero-drone.jpg" alt="Drones agrícolas de monitoreo y pulverización" class="service-img">
+            </div>
+            <div class="service-body">
+              <span class="service-num">[PILAR 01]</span>
+              <h3 class="service-title">Enjambres de Drones Autónomos</h3>
+              <p class="service-desc">
+                Sustituimos la fumigación manual de mochila (altamente tóxica y agotadora) y el recorrido a pie por patrullajes aéreos autónomos con cámaras multiespectrales NDVI.
+              </p>
+              <ul class="service-specs">
+                <li>Mapeo de salud vegetal y detección temprana de plagas</li>
+                <li>Pulverización ultra-localizada con 90% menos químicos</li>
+                <li>Operación programable con despegue y retorno autónomo</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pillar 2 -->
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="assets/images/autonomous-machinery.jpg" alt="Maquinaria agrícola no tripulada guiada por IA" class="service-img" width="1376" height="768" loading="lazy" decoding="async">
+            </div>
+            <div class="service-body">
+              <span class="service-num">[PILAR 02]</span>
+              <h3 class="service-title">Maquinaria No Tripulada & Robótica</h3>
+              <p class="service-desc">
+                Kits de conducción autónoma con LIDAR y visión artificial para tractores e implementos. Preparación de suelo, surcado y siembra continua 24/7 sin fatiga humana ni riesgos.
+              </p>
+              <ul class="service-specs">
+                <li>Navegación satelital RTK con precisión milimétrica</li>
+                <li>Operación diurna y nocturna para aprovechar ventanas de clima</li>
+                <li>Ahorro crítico de combustible diésel y desgaste mecánico</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pillar 3 -->
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="assets/images/drone-irrigation.jpg" alt="Dron de pulverización y riego agéntico sobre cultivos" class="service-img" width="1376" height="768" loading="lazy" decoding="async">
+            </div>
+            <div class="service-body">
+              <span class="service-num">[PILAR 03]</span>
+              <h3 class="service-title">Riego Agéntico & Automatización de Cultivos</h3>
+              <p class="service-desc">
+                Sensores volumétricos de humedad de suelo alimentados por energía solar combinados con drones de pulverización ultra-localizada. La IA decide cuándo y cuánto regar según predicciones meteorológicas satelitales en tiempo real.
+              </p>
+              <ul class="service-specs">
+                <li>Ahorro de hasta 45% de agua y combustible diésel</li>
+                <li>Control remoto de bombas y electroválvulas vía radiofrecuencia</li>
+                <li>Pulverización y riego de precisión por enjambres de drones</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pillar 4 -->
+          <div class="service-card">
+            <div class="service-img-wrapper">
+              <img src="assets/images/livestock-corralx.jpg" alt="Monitoreo pecuario y animal en tiempo real con Corral X" class="service-img" width="1376" height="768" loading="lazy" decoding="async">
+            </div>
+            <div class="service-body">
+              <span class="service-num">[PILAR 04]</span>
+              <h3 class="service-title">Monitoreo Pecuario & Ecosistema Corral X</h3>
+              <p class="service-desc">
+                Aretes inteligentes con telemetría biométrica, geocercas activas y conteo aéreo con drones térmicos conectados a la app <strong>Corral X</strong>, permitiéndote certificar lotes de ganado y comercializarlos directamente entre ganaderos con predicción de precios por IA.
+              </p>
+              <ul class="service-specs">
+                <li>Detección temprana de celo, parto y anomalías térmicas en potrero</li>
+                <li>Geocercas virtuales anti-abigeato con alertas satelitales inmediatas</li>
+                <li>Conexión con la app Corral X para venta directa ganadero a ganadero</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Corral X Spotlight: App Ganadero a Ganadero con IA Predictiva
+         ========================================================================== -->
+    <section id="corralx" class="section section-alt">
+      <div class="container">
+        <div class="corralx-banner">
+          <div class="corralx-content">
+            <span class="corralx-badge"><span class="status-dot"></span> POTENCIADO POR CORRAL X CORE</span>
+            <h2 class="corralx-title">LA APP QUE CONECTA GANADEROS DIRECTAMENTE // COMPRA Y VENTA CON IA PREDICTIVA</h2>
+            <p class="corralx-desc">
+              <strong>Corral X</strong> es la aplicación móvil y web creada para <strong>conectar ganaderos directamente con ganaderos</strong> (peer-to-peer). Permite comprar y vender ganado de forma transparente sin comisionistas que devalúen tu trabajo, impulsada por una <strong>Inteligencia Artificial que predice los precios del mercado ganadero</strong>, analiza tendencias y te indica el valor óptimo de tus animales para que comercialices en el momento más rentable.
+            </p>
+
+            <div class="corralx-features">
+              <div class="corralx-f-card">
+                <div class="corralx-f-title">CONEXIÓN GANADERO A GANADERO (P2P)</div>
+                <div class="corralx-f-desc">Vende y compra mautes, novillos, toros y vacas de ordeño directamente entre productores verificados a nivel nacional, sin intermediarios.</div>
+              </div>
+              <div class="corralx-f-card">
+                <div class="corralx-f-title">IA PREDICTIVA DE PRECIOS DEL GANADO</div>
+                <div class="corralx-f-desc">Modelos de IA que analizan la oferta, demanda estacional y variables económicas para predecir precios futuros y recomendarte el mejor momento de venta.</div>
+              </div>
+              <div class="corralx-f-card">
+                <div class="corralx-f-title">PESAJE DIGITAL & ESTIMACIÓN POR IA</div>
+                <div class="corralx-f-desc">Curvas de ganancia de peso diario, clasificación biométrica de lotes y trazabilidad sanitaria para negociar con datos precisos y certificados.</div>
+              </div>
+              <div class="corralx-f-card">
+                <div class="corralx-f-title">TRATOS DIRECTOS DESDE TU TELÉFONO</div>
+                <div class="corralx-f-desc">Publica tus lotes con fotos y videos, recibe ofertas directas de otros ganaderos y cierra tratos seguros desde la app estés en la finca o en la ciudad.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="corralx-media-wrap">
+            <img src="assets/images/livestock-corralx.jpg" alt="Plataforma Corral X para ganaderos" class="corralx-img" width="1376" height="768" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Interactive Tool: Calculadora de Riesgo de Relevo
+         ========================================================================== -->
+    <section id="calculadora" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label"><span class="status-dot red"></span> HERRAMIENTA DE DIAGNÓSTICO INTERACTIVO</span>
+          <h2 class="section-title">CALCULADORA DE VULNERABILIDAD & RELEVO GENERACIONAL</h2>
+          <p class="section-desc">
+            Introduce los datos de tu unidad de producción para medir el riesgo de paralización por escasez de relevo y el impacto inmediato de sustituir el trabajo manual forzoso por agentes de AGRO TECH.
+          </p>
+        </div>
+
+        <div class="calculator-container">
+          <!-- Controls -->
+          <div class="calc-controls">
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label for="calcHectareas" class="calc-label">1. Superficie Productiva (Hectáreas)</label>
+                <span id="valHectareas" class="calc-value-display">250 Ha</span>
+              </div>
+              <input type="range" id="calcHectareas" class="calc-slider" min="10" max="2500" step="10" value="250">
+            </div>
+
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label for="calcEdad" class="calc-label">2. Edad del Productor Titular</label>
+                <span id="valEdad" class="calc-value-display">58 AÑOS</span>
+              </div>
+              <input type="range" id="calcEdad" class="calc-slider" min="30" max="85" step="1" value="58">
+            </div>
+
+            <div class="calc-field">
+              <div class="calc-label-row">
+                <label for="calcObreros" class="calc-label">3. Personal en Labores Manuales Forzosas</label>
+                <span id="valObreros" class="calc-value-display">8 TRABAJADORES</span>
+              </div>
+              <input type="range" id="calcObreros" class="calc-slider" min="1" max="60" step="1" value="8">
+            </div>
+          </div>
+
+          <!-- Live Output -->
+          <div class="calc-results-box">
+            <div class="results-header">
+              <div class="results-title">ÍNDICE DE VULNERABILIDAD RURAL</div>
+              <div class="vulnerability-status">
+                <div id="vulnScoreBadge" class="vulnBadge">79% [CRÍTICO]</div>
+              </div>
+              <div id="vulnLabel" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-secondary); margin-top: 0.4rem;">
+                Alto riesgo de paralización operativa por envejecimiento y deserción de mano de obra.
+              </div>
+            </div>
+
+            <div class="results-metrics">
+              <div class="res-metric-item">
+                <span class="res-metric-label">TRABAJO FORZOSO SUSTITUIBLE POR IA:</span>
+                <span id="horasAhorradas" class="res-metric-val highlight">13,728 HRS/AÑO</span>
+              </div>
+
+              <div class="res-metric-item">
+                <span class="res-metric-label">AHORRO ESTIMADO EN DIÉSEL Y DERROCHE:</span>
+                <span id="ahorroCombustible" class="res-metric-val">~8,000 LTRS/AÑO</span>
+              </div>
+
+              <div class="res-metric-item">
+                <span class="res-metric-label">AHORRO OPERATIVO ANUAL ESTIMADO:</span>
+                <span id="ahorroDolares" class="res-metric-val highlight" style="color: var(--green-primary); font-size: 1.25rem;">$18,400 USD/AÑO</span>
+              </div>
+
+              <div class="res-metric-item">
+                <span class="res-metric-label">RETORNO DE INVERSIÓN (PAYBACK ESTIMADO):</span>
+                <span id="paybackMeses" class="res-metric-val">~7.2 MESES</span>
+              </div>
+
+              <div class="res-metric-item">
+                <span class="res-metric-label">CONTINUIDAD GENERACIONAL PROYECTADA:</span>
+                <span id="continuidadDisplay" class="res-metric-val" style="color: var(--green-primary);">GARANTIZADA (+20 AÑOS)</span>
+              </div>
+            </div>
+
+            <a href="#contacto" class="btn btn-primary calc-cta-btn">
+              Blindar Mi Finca Ahora →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Voces del Campo: Casos de Éxito & Testimonios
+         ========================================================================== -->
+    <section id="testimonios" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label"><span class="status-dot"></span> PRUEBA DE CAMPO VENEZOLANO</span>
+          <h2 class="section-title">LO QUE DICEN LOS PRODUCTORES QUE YA TRANSFORMARON SU FINCA</h2>
+          <p class="section-desc">
+            Productores e ingenieros agrónomos de Portuguesa, Guárico y Barinas demuestran cómo la autonomía agéntica devolvió la rentabilidad a sus tierras.
+          </p>
+        </div>
+
+        <div class="testimonials-grid">
+          <!-- Testimonial 1 -->
+          <div class="testimonial-card">
+            <div class="testimonial-quote-mark">“</div>
+            <p class="testimonial-text">
+              Pasamos de gastar 12 días y lidiar con la escasez de 16 obreros para fumigar 400 Ha de maíz, a cubrirlo en solo 14 horas con un operador joven comandando el enjambre de drones. El ahorro de insumos pagó el equipo en menos de un ciclo.
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar-mono">RA</div>
+              <div class="author-info">
+                <strong>Ing. Roberto Albarrán</strong>
+                <span>Finca La Providencia · Turén, Portuguesa</span>
+                <span class="author-tag">Cultivo: Maíz & Sorgo (420 Ha)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div class="testimonial-card">
+            <div class="testimonial-quote-mark">“</div>
+            <p class="testimonial-text">
+              El riego agéntico solar redujo un 42% el consumo de diésel para el bombeo en Calabozo. Pero lo más emocionante: mi hijo de 24 años, que planeaba migrar, ahora comanda la telemetría de la finca desde su laptop con total orgullo.
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar-mono">MC</div>
+              <div class="author-info">
+                <strong>Dr. Marcial Colmenares</strong>
+                <span>Hato El Cedro · Calabozo, Guárico</span>
+                <span class="author-tag">Cultivo: Arroz & Ganadería Doble Propósito</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 3 -->
+          <div class="testimonial-card">
+            <div class="testimonial-quote-mark">“</div>
+            <p class="testimonial-text">
+              Con los aretes inteligentes de Corral X y los sobrevuelos infrarrojos nocturnos, el abigeato bajó a cero en nuestra zona. Recibir alertas inmediatas si una vaca se aparta del lote nos devolvió la tranquilidad que habíamos perdido hace años.
+            </p>
+            <div class="testimonial-author">
+              <div class="author-avatar-mono">GB</div>
+              <div class="author-info">
+                <strong>Guillermo Bastidas</strong>
+                <span>Hacienda Santa Bárbara · Pedraza, Barinas</span>
+                <span class="author-tag">Rubro: Ganadería Bovina y Bufalina</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Live Agentic Telemetry HUD (Corral X Simulator)
+         ========================================================================== -->
+    <section id="telemetria" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label"><span class="status-dot"></span> TELEMETRÍA AGÉNTICA EN TIEMPO REAL</span>
+          <h2 class="section-title">CORRAL X MISSION CONTROL: OPERACIONES EN VENEZUELA</h2>
+          <p class="section-desc">
+            Visualiza en tiempo real el tráfico de eventos y decisiones autónomas que ejecutan nuestros agentes en campo en Portuguesa, Guárico, Barinas y Zulia.
+          </p>
+        </div>
+
+        <div class="hud-console">
+          <div class="hud-topbar">
+            <div class="hud-dots">
+              <div class="hud-dot"></div>
+              <div class="hud-dot"></div>
+              <div class="hud-dot"></div>
+            </div>
+            <span>CORRAL-X-AGENTIC-CORE // TELEMETRY LINK: ESTABLE (SOLAR/4G/STARLINK)</span>
+            <span>FRECUENCIA: 868 MHz / LORA</span>
+          </div>
+
+          <div id="hudFeedBody" class="hud-feed-body">
+            <!-- Dynamically populated by app.js -->
+          </div>
+
+          <div class="hud-footer">
+            <span>[AGRO TECH SYSTEM ACTIVE]</span>
+            <span>NODOS ACTIVOS: 142 · PROTOCOLO: AGENTIC-FARM-V4</span>
+            <span>LATENCIA: 14ms</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Preguntas Frecuentes Técnicas (FAQ Accordion)
+         ========================================================================== -->
+    <section id="faq" class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label"><span class="status-dot"></span> RESOLUCIÓN DE OBJECIONES</span>
+          <h2 class="section-title">PREGUNTAS FRECUENTES DEL PRODUCTOR AGROPECUARIO</h2>
+          <p class="section-desc">
+            Respuestas claras y directas a las dudas técnicas y operativas más comunes sobre la implementación de IA en el campo venezolano.
+          </p>
+        </div>
+
+        <div class="faq-accordion">
+          <!-- FAQ Item 1 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>01 // ¿Cómo vuelan y recargan los drones si en mi zona falla la electricidad o escasea el combustible?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Cada cuadrilla de AGRO TECH incluye una <strong>Estación Solar Híbrida Móvil</strong> con baterías LiFePO4 de carga ultra-rápida y generador auxiliar de bajo consumo. No dependes del tendido eléctrico público ni de grandes inventarios de diésel para operar de forma continua durante toda la jornada.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>02 // ¿Cómo se comunican los sensores y maquinaria si en mis potreros no hay señal celular?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Desplegamos una <strong>red mallada LoRaWAN de largo alcance (hasta 15 km de cobertura sin cables ni operadoras)</strong>, conectada a una estación satelital Starlink en el casco de la finca. Cada dron, tractor, arete inteligente y válvula de riego se comunica por radiofrecuencia sin necesidad de cobertura telefónica comercial.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>03 // ¿Dónde está ubicada su sede principal y cómo atienden el soporte y repuestos?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Nuestra <strong>sede principal y centro operativo está ubicada en el Estado Zulia</strong>, desde donde <strong>QUANTUN NEXUS C.A.</strong> mantiene el inventario central de repuestos originales (rotores, boquillas centrífugas, motores brushless, módulos de telemetría y sensores). Desde el Zulia coordinamos la atención técnica presencial y el soporte de ingeniería para productores agropecuarios en todo el país.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>04 // ¿Cuánto tiempo toma capacitar al personal o a los jóvenes de la finca?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Las consolas están diseñadas con interfaces táctiles intuitivas guiadas por inteligencia artificial. En solo <strong>3 días de entrenamiento en campo</strong>, cualquier hijo de productor, encargado o tractorista domina el trazo de polígonos, el despegue autónomo y el monitoreo pecuario sin requerir conocimientos previos de programación.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 5 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>05 // ¿Se puede implementar la tecnología por fases (modelo modular)?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                Absolutamente. La arquitectura de AGRO TECH es 100% modular. La mayoría de los productores inician con el <strong>Servicio de Pulverización con Dron</strong> o el <strong>Kit de Riego Agéntico Solar</strong> para comprobar el retorno de inversión, antes de avanzar a la telemetría bovina Corral X o los kits de guiado para tractores.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ Item 6 -->
+          <div class="faq-item">
+            <button type="button" class="faq-question" aria-expanded="false">
+              <span>06 // ¿Qué es exactamente Corral X y cómo me ayuda a vender y comprar ganado?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>
+                <strong>Corral X</strong> es una aplicación móvil y web desarrollada para <strong>conectar directamente a ganaderos con ganaderos</strong> (peer-to-peer). Permite comprar y vender lotes de ganado de forma directa, eliminando las comisiones abusivas de los intermediarios. La app cuenta con una <strong>Inteligencia Artificial que predice los precios del mercado ganadero</strong>, analizando oferta, demanda y proyecciones para indicarte el valor óptimo de tus animales y el mejor momento para comercializarlos. Además, integra pesaje digital por IA, curvas de ganancia de peso y verificación sanitaria para que cierres tratos con total seguridad y transparencia.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Conversion / Audit Request Form
+         ========================================================================== -->
+    <section id="contacto" class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="section-header" style="margin-bottom: 1.5rem;">
+              <span class="section-label"><span class="status-dot"></span> SOBERANÍA PRODUCTIVA INMEDIATA</span>
+              <h2 class="section-title">AGENDA TU AUDITORÍA TECNOLÓGICA EN CAMPO</h2>
+              <p class="section-desc">
+                No esperes a que tu próxima cosecha se pierda por falta de personal. Nuestro equipo de ingenieros agrónomos y especialistas en robótica evalúa tu finca en sitio y diseña tu plan de autonomía integral.
+              </p>
+            </div>
+
+            <div class="contact-promises">
+              <div class="promise-item">
+                <span class="promise-icon">[01]</span>
+                <div class="promise-text">
+                  <h4>DIAGNÓSTICO INTEGRAL EN SITIO</h4>
+                  <p>Mapeo multiespectral de tu relieve, fuentes de agua, conectividad y puntos críticos de trabajo forzoso.</p>
+                </div>
+              </div>
+
+              <div class="promise-item">
+                <span class="promise-icon">[02]</span>
+                <div class="promise-text">
+                  <h4>PLAN DE TRANSICIÓN ESCALABLE</h4>
+                  <p>Desde la primera electroválvula solar de riego hasta la flota completa de drones de pulverización.</p>
+                </div>
+              </div>
+
+              <div class="promise-item">
+                <span class="promise-icon">[03]</span>
+                <div class="promise-text">
+                  <h4>CAPACITACIÓN Y EMPODERAMIENTO JUVENIL</h4>
+                  <p>Entrenamos a los hijos de los productores y operadores locales para que manejen las consolas agénticas con orgullo profesional.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-channels" style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.5rem;">
+              <div class="whatsapp-direct-box" style="margin-top: 0;">
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">
+                  ¿Prefieres atención inmediata vía WhatsApp?
+                </span>
+                <a id="whatsappDirectBtn" href="https://api.whatsapp.com/send?phone=584227158087&text=Hola%20AGRO%20TECH.%20Deseo%20informaci%C3%B3n%20sobre%20la%20automatizaci%C3%B3n%20de%20mi%20finca%20con%20Corral%20X." target="_blank" rel="noopener" class="btn btn-outline" style="border-color: var(--green-primary); color: var(--green-primary);">
+                  <span>WhatsApp Directo: +58 422-715-8087</span>
+                  <span>💬</span>
+                </a>
+              </div>
+
+              <div class="email-direct-box" style="padding: 1rem 1.25rem; border: var(--border-width) solid var(--border-color); background: var(--bg-surface); box-shadow: var(--shadow-tactile);">
+                <span style="display: block; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--green-primary); margin-bottom: 0.35rem;">
+                  ✉️ CORREO ELECTRÓNICO CENTRAL:
+                </span>
+                <a href="mailto:infocorralx@gmail.com" class="btn btn-outline btn-sm" style="width: 100%; border-color: var(--ink-primary); font-family: var(--font-mono); font-size: 0.9rem;">
+                  <span>infocorralx@gmail.com</span>
+                </a>
+              </div>
+
+              <div class="sede-direct-box" style="padding: 1rem 1.25rem; border: var(--border-width) solid var(--border-color); background: var(--bg-surface); box-shadow: var(--shadow-tactile);">
+                <span style="display: block; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--green-primary); margin-bottom: 0.35rem;">
+                  📍 SEDE PRINCIPAL:
+                </span>
+                <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-primary);">
+                  <strong>QUANTUN NEXUS C.A. · Estado Zulia, Venezuela</strong>
+                  <div style="font-size: 0.75rem; color: var(--ink-secondary); margin-top: 2px;">Atención técnica presencial y despliegue a nivel nacional.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Box -->
+          <div class="contact-form-box">
+            <form id="auditForm" class="contact-form" action="https://formsubmit.co/infocorralx@gmail.com" method="POST">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="_subject" value="Nueva Solicitud de Auditoría - AGRO TECH">
+
+              <div class="form-group">
+                <label for="auditNombre" class="form-label">Nombre del Productor / Empresa *</label>
+                <input type="text" id="auditNombre" name="nombre" class="form-input" required placeholder="Ej. Ing. Carlos Mendoza">
+              </div>
+
+              <div class="form-group">
+                <label for="auditFinca" class="form-label">Nombre de la Finca o Unidad de Producción *</label>
+                <input type="text" id="auditFinca" name="finca" class="form-input" required placeholder="Ej. Agropecuaria La Esperanza">
+              </div>
+
+              <div class="form-group">
+                <label for="auditEstado" class="form-label">Estado de Venezuela *</label>
+                <select id="auditEstado" name="estado" class="form-input" required>
+                  <option value="" disabled selected>Selecciona tu estado...</option>
+                  <option value="Portuguesa">Portuguesa (Turén, Acarigua, Guanare)</option>
+                  <option value="Guarico">Guárico (Calabozo, Valle de la Pascua, Chaguaramas)</option>
+                  <option value="Barinas">Barinas (Barinas, Pedraza, Sabaneta)</option>
+                  <option value="Zulia">Zulia (Sur del Lago, Machiques, Perijá)</option>
+                  <option value="Anzoategui">Anzoátegui (Pariaguán, El Tigre)</option>
+                  <option value="Cojedes">Cojedes (San Carlos, El Pao)</option>
+                  <option value="Monagas">Monagas / Bolívar</option>
+                  <option value="Lara_Yaracuy">Lara / Yaracuy / Falcón</option>
+                  <option value="Merida_Trujillo_Tachira">Región Andina (Mérida, Táchira, Trujillo)</option>
+                  <option value="Otro">Otro Estado de Venezuela</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="auditHa" class="form-label">Superficie Aproximada (Hectáreas) *</label>
+                <input type="number" id="auditHa" name="hectareas" class="form-input" required min="5" placeholder="Ej. 180">
+              </div>
+
+              <div class="form-group">
+                <label for="auditRubro" class="form-label">Rubro Principal *</label>
+                <select id="auditRubro" name="rubro" class="form-input" required>
+                  <option value="Maíz / Sorgo / Cereales">Maíz / Sorgo / Cereales</option>
+                  <option value="Arroz">Arroz</option>
+                  <option value="Ganadería de Carne">Ganadería de Carne</option>
+                  <option value="Ganadería Doble Propósito / Leche">Ganadería Doble Propósito / Leche</option>
+                  <option value="Caña de Azúcar">Caña de Azúcar</option>
+                  <option value="Café / Cacao">Café / Cacao</option>
+                  <option value="Hortalizas / Frutales">Hortalizas / Frutales</option>
+                  <option value="Otro">Otro rubro</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="auditEmail" class="form-label">Correo Electrónico de Contacto *</label>
+                <input type="email" id="auditEmail" name="email" class="form-input" required placeholder="tu-correo@ejemplo.com">
+              </div>
+
+              <div class="form-group">
+                <label for="auditTelefono" class="form-label">Teléfono WhatsApp de Contacto *</label>
+                <input type="tel" id="auditTelefono" name="telefono" class="form-input" required placeholder="Ej. 0422-7158087">
+              </div>
+
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-secondary); margin-bottom: 0.85rem; line-height: 1.4;">
+                [✓] La solicitud llegará a <strong>infocorralx@gmail.com</strong> y a nuestro equipo de ingenieros por WhatsApp.
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                Enviar Solicitud de Auditoría →
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Procedural Grass Divider (Footer Horizon) -->
+    <div class="section-grass-divider">
+      <canvas id="footerGrassCanvas" class="interactive-grass-canvas" aria-hidden="true"></canvas>
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       Footer
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>AGRO TECH</h3>
+          <p>
+            Primera empresa de AgroTech de Venezuela potenciada por Corral X Core. Erradicando el trabajo forzoso para asegurar la soberanía alimentaria con Inteligencia Artificial.
+          </p>
+          <div style="margin-top: 1rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6;">
+            <div style="color: #63AA60;">
+              <strong>CORREO CENTRAL:</strong><br>
+              <a href="mailto:infocorralx@gmail.com" style="color: #F4F3EE; text-decoration: underline;">infocorralx@gmail.com</a>
+            </div>
+            <div style="margin-top: 0.6rem; color: #63AA60;">
+              <strong>CONTACTO DIRECTO / WHATSAPP:</strong><br>
+              <a href="https://wa.me/584227158087" target="_blank" style="color: #F4F3EE; text-decoration: underline;">+58 422 715 8087</a> (0422-7158087)
+            </div>
+            <div style="margin-top: 0.6rem; color: #63AA60;">
+              <strong>SEDE PRINCIPAL:</strong><br>
+              <span style="color: #F4F3EE;">Estado Zulia, Venezuela</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>SOLUCIONES</h4>
+          <ul class="footer-links">
+            <li><a href="#servicios">Enjambres de Drones</a></li>
+            <li><a href="#servicios">Maquinaria No Tripulada</a></li>
+            <li><a href="#servicios">Riego Agéntico Solar</a></li>
+            <li><a href="#corralx">Corral X App Ganadera</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>ALCANCE NACIONAL</h4>
+          <ul class="footer-links">
+            <li><a href="#contacto">Sede Principal Zulia</a></li>
+            <li><a href="#contacto">Llanos Occidentales</a></li>
+            <li><a href="#contacto">Llanos Centrales</a></li>
+            <li><a href="#contacto">Oriente & Centro</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>FILOSOFÍA 2026</h4>
+          <ul class="footer-links">
+            <li><a href="#crisis">Relevo Generacional</a></li>
+            <li><a href="#crisis">Cero Trabajo Forzoso</a></li>
+            <li><a href="#calculadora">Calculadora & ROI</a></li>
+            <li><a href="#telemetria">Protocolo Agéntico</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 QUANTUN NEXUS C.A. · TODOS LOS DERECHOS RESERVADOS · SEDE PRINCIPAL: ESTADO ZULIA, VENEZUELA.</div>
+        <div>POTENCIADO POR CORRAL X CORE · APP GANADERO A GANADERO CON IA PREDICTIVA DE PRECIOS.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       Floating AI Agro Assistant (Corral X Copilot)
+       ========================================================================== -->
+  <aside id="aiAssistantWidget" class="ai-widget" aria-label="Asistente IA Agro Tech">
+    <!-- Floating Trigger Button -->
+    <button id="aiFabBtn" class="ai-fab-btn" aria-expanded="false" aria-label="Abrir Asistente IA de AGRO TECH">
+      <span class="ai-fab-pulse"></span>
+      <span class="ai-fab-icon">⚡</span>
+      <span class="ai-fab-label">AGENTE IA</span>
+    </button>
+
+    <!-- Chat Drawer / Modal Terminal -->
+    <div id="aiChatDrawer" class="ai-chat-drawer" aria-hidden="true">
+      <div class="ai-chat-header">
+        <div class="ai-chat-title-group">
+          <span class="status-dot"></span>
+          <span class="ai-chat-title">CORRAL X COPILOT // ASISTENTE AGRO IA</span>
+        </div>
+        <div class="ai-chat-header-actions">
+          <span class="ai-chat-badge">EN LÍNEA 24/7</span>
+          <button id="aiCloseBtn" class="ai-close-btn" aria-label="Cerrar Asistente IA">✕</button>
+        </div>
+      </div>
+
+      <!-- Quick Prompt Chips -->
+      <div class="ai-chips-wrap">
+        <div class="ai-chips-label">PREGUNTAS RÁPIDAS FRECUENTES:</div>
+        <div class="ai-chips-scroll">
+          <button type="button" class="ai-chip" data-query="¿Cómo funciona la app Corral X para comprar y vender ganado entre ganaderos?">🐄 ¿Cómo funciona Corral X?</button>
+          <button type="button" class="ai-chip" data-query="¿Dónde está su sede principal y cómo atienden repuestos?">📍 ¿Dónde está su sede principal?</button>
+          <button type="button" class="ai-chip" data-query="¿Cómo funciona si no hay internet en mi finca?">📶 ¿Sin internet en mi finca?</button>
+          <button type="button" class="ai-chip" data-query="¿Cuánto combustible ahorra la robótica y el riego?">⛽ ¿Cuánto combustible ahorro?</button>
+          <button type="button" class="ai-chip" data-query="¿Cómo solicito una auditoría técnica para mi finca?">📋 ¿Cómo agendo la auditoría?</button>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div id="aiChatMessages" class="ai-chat-messages">
+        <div class="ai-msg ai-msg-bot">
+          <div class="ai-msg-avatar">IA</div>
+          <div class="ai-msg-bubble">
+            ¡Saludos, productor! Soy el <strong>Agente Autónomo de AGRO TECH y Corral X</strong>.
+            <br><br>
+            Nuestra <strong>sede principal está en el Estado Zulia</strong> con alcance nacional. Estoy aquí para resolver tus dudas técnicas sobre enjambres de drones, riego solar agéntico y la <strong>app Corral X</strong> para conectar ganaderos directamente en la compra y venta de ganado con Inteligencia Artificial que predice precios.
+            <br><br>
+            <em>Toca una pregunta rápida arriba o escríbeme directamente sobre tu finca.</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <form id="aiChatForm" class="ai-chat-form">
+        <input type="text" id="aiChatInput" class="ai-chat-input" placeholder="Haz tu pregunta técnica sobre tu finca..." autocomplete="off" required>
+        <button type="submit" class="ai-send-btn" aria-label="Enviar pregunta">
+          <span>ENVIAR</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <!-- Bottom Fast Channels -->
+      <div class="ai-chat-footer">
+        <a href="https://wa.me/584227158087" target="_blank" class="ai-footer-link">
+          <span>WhatsApp: 0422-7158087</span> 💬
+        </a>
+        <a href="mailto:infocorralx@gmail.com" class="ai-footer-link">
+          <span>infocorralx@gmail.com</span> ✉️
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       Dossier Técnico Oficial 2026 Modal
+       ========================================================================== -->
+  <div id="dossierModal" class="dossier-modal" aria-hidden="true">
+    <div class="dossier-backdrop" id="dossierBackdrop"></div>
+    <div class="dossier-dialog" role="dialog" aria-modal="true">
+      <div class="dossier-header">
+        <div>
+          <span class="dossier-tag">[DOCUMENTO OFICIAL // 2026]</span>
+          <h2 class="dossier-title">DOSSIER TÉCNICO DE AUTONOMÍA AGROPECUARIA</h2>
+          <div class="dossier-sub">QUANTUN NEXUS C.A. · AGRO TECH VENEZUELA · CORRAL X CORE</div>
+        </div>
+        <button id="closeDossierBtn" class="dossier-close-btn" aria-label="Cerrar Dossier">✕</button>
+      </div>
+
+      <div class="dossier-content">
+        <div class="dossier-section">
+          <h3>1. ARQUITECTURA DE HARDWARE Y ROBÓTICA DE CAMPO</h3>
+          <div style="overflow-x: auto;">
+            <table class="dossier-table">
+              <thead>
+                <tr>
+                  <th>Unidad</th>
+                  <th>Especificaciones Clave</th>
+                  <th>Capacidad Operativa</th>
+                  <th>Enlace de Datos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>AGRO-DRONE V4 (Pulverización)</strong></td>
+                  <td>Tanque 40L, 8 boquillas rotativas centrífugas, bomba dual</td>
+                  <td>Hasta 18 Ha/Hora (90% menos agua y químicos)</td>
+                  <td>RTK Milimétrico + Enlace 10km</td>
+                </tr>
+                <tr>
+                  <td><strong>KIT TRACTOR NO TRIPULADO</strong></td>
+                  <td>LIDAR 360°, servomotores de dirección RTK, visión estéreo</td>
+                  <td>Operación continua 24/7 (día y noche)</td>
+                  <td>Radiofrecuencia 868MHz + Starlink</td>
+                </tr>
+                <tr>
+                  <td><strong>NODO DE RIEGO SOLAR LORA</strong></td>
+                  <td>Sensor volumétrico 3 profundidades, electroválvula solar</td>
+                  <td>Autonomía solar infinita (panel + supercondensador)</td>
+                  <td>LoRaWAN Mallado 15km</td>
+                </tr>
+                <tr>
+                  <td><strong>ARETE BIOMÉTRICO CORRAL X</strong></td>
+                  <td>Sensor térmico, acelerómetro 3 ejes, microchip de pesaje</td>
+                  <td>Monitoreo pecuario anti-abigeato 3 años de batería</td>
+                  <td>Antena repetidora de potrero</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="dossier-section">
+          <h3>2. PROTOCOLO DE DESPLIEGUE EN 3 FASES</h3>
+          <div class="dossier-steps">
+            <div class="dossier-step-box">
+              <span class="step-num">FASE 01</span>
+              <h4>Auditoría Multiespectral</h4>
+              <p>Mapeo topográfico, relieve de drenaje, análisis NDVI de vigor vegetal y puntos críticos de trabajo forzoso en la finca.</p>
+            </div>
+            <div class="dossier-step-box">
+              <span class="step-num">FASE 02</span>
+              <h4>Instalación de Nodos & Base RTK</h4>
+              <p>Montaje de la antena central LoRaWAN, estación solar híbrida y configuración de las consolas táctiles para los operadores locales.</p>
+            </div>
+            <div class="dossier-step-box">
+              <span class="step-num">FASE 03</span>
+              <h4>Operación Autónoma & App Corral X</h4>
+              <p>Comando de enjambres, riego solar agéntico y comercialización directa de ganado en la app Corral X con predicción de precios por IA.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dossier-section">
+          <h3>3. CONTACTO Y SOPORTE INGENIERIL EN VENEZUELA</h3>
+          <p style="font-size: 0.9rem; line-height: 1.6; margin-top: 0.5rem;">
+            <strong>Operado por QUANTUN NEXUS C.A.</strong><br>
+            <strong>Sede Principal:</strong> Estado Zulia, Venezuela (Atención técnica y soporte presencial a nivel nacional).<br>
+            <strong>Correo Central:</strong> <a href="mailto:infocorralx@gmail.com" style="text-decoration: underline;">infocorralx@gmail.com</a><br>
+            <strong>WhatsApp Oficial:</strong> <a href="https://wa.me/584227158087" target="_blank" style="text-decoration: underline;">+58 422 715 8087</a> (0422-7158087)
+          </p>
+        </div>
+      </div>
+
+      <div class="dossier-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+        <a href="#contacto" class="btn btn-primary btn-sm" id="dossierCtaBtn">Solicitar Auditoría de Finca →</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js?v=2026.14"></script>
+</body>
+</html>
