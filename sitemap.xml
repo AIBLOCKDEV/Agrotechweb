@@ -41,9 +41,15 @@
     </image:image>
 
     <image:image>
-      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/livestock-corralx.jpg</image:loc>
-      <image:title>Corral X · Venta Ganadero a Ganadero con IA Predictiva de Precios</image:title>
-      <image:caption>Plataforma P2P ganadera sin intermediarios conectada con telemetría ESP32.</image:caption>
+      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/corralx-feature.jpg</image:loc>
+      <image:title>Corral X · Marketplace Ganadero P2P de Venezuela Potenciado por IA</image:title>
+      <image:caption>Compra y venta directa de ganado Cebú (Brahman, Gyr, Nelore) con 0% comisión, IA Insights, verificación KYC y control sanitario.</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/corralx-ia-insights.jpg</image:loc>
+      <image:title>Corral X IA Insights · Datos del Mercado Ganadero en Tiempo Real</image:title>
+      <image:caption>Análisis por Inteligencia Artificial del alcance de lotes, demanda regional y conversión de ventas ganaderas.</image:caption>
     </image:image>
   </url>
 

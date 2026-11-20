@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQAccordion();
   initAIAssistant();
   initDossierModal();
+  initCorralXShowcase();
 });
 
 function prefersReducedMotion() {
@@ -1880,5 +1881,99 @@ function initDossierModal() {
       trapFocus(modal, e);
     }
   });
+}
+
+/* ==========================================================================
+   12. Corral X Real App Screenshot Showcase Switcher
+   ========================================================================== */
+function initCorralXShowcase() {
+  const showcase = document.getElementById('corralxShowcase');
+  if (!showcase) return;
+
+  const slides = Array.from(showcase.querySelectorAll('.corralx-slide'));
+  const tabs = Array.from(showcase.querySelectorAll('.corralx-tab'));
+  const featureCards = Array.from(document.querySelectorAll('.corralx-f-card[data-screen-idx]'));
+  const prevBtn = document.getElementById('corralxPrevBtn');
+  const nextBtn = document.getElementById('corralxNextBtn');
+  const counterEl = document.getElementById('corralxCounter');
+  const captionEl = document.getElementById('corralxCaption');
+
+  if (!slides.length) return;
+  let currentIndex = 0;
+
+  function setSlide(index, shouldClickSound = false) {
+    const total = slides.length;
+    currentIndex = ((index % total) + total) % total;
+
+    if (shouldClickSound) {
+      playTactileClick();
+    }
+
+    slides.forEach((slide, idx) => {
+      slide.classList.toggle('is-active', idx === currentIndex);
+    });
+
+    tabs.forEach((tab, idx) => {
+      const isSelected = idx === currentIndex;
+      tab.classList.toggle('is-active', isSelected);
+      tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+    });
+
+    featureCards.forEach((card) => {
+      const groupAttr = card.getAttribute('data-screen-group') || card.getAttribute('data-screen-idx') || '';
+      const groupIndices = groupAttr.split(',').map((n) => parseInt(n.trim(), 10));
+      card.classList.toggle('is-active', groupIndices.includes(currentIndex));
+    });
+
+    if (counterEl) {
+      const num = String(currentIndex + 1).padStart(2, '0');
+      const den = String(total).padStart(2, '0');
+      counterEl.textContent = `${num} / ${den}`;
+    }
+
+    if (captionEl) {
+      const caption = slides[currentIndex].getAttribute('data-caption') || '';
+      captionEl.textContent = caption;
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => setSlide(currentIndex - 1, true));
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => setSlide(currentIndex + 1, true));
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const idx = parseInt(tab.getAttribute('data-tab-idx'), 10);
+      if (!Number.isNaN(idx)) setSlide(idx, true);
+    });
+  });
+
+  featureCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.getAttribute('data-screen-idx'), 10);
+      if (!Number.isNaN(idx)) {
+        setSlide(idx, true);
+        if (window.innerWidth <= 1024) {
+          showcase.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
+        }
+      }
+    });
+  });
+
+  showcase.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setSlide(currentIndex - 1, true);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setSlide(currentIndex + 1, true);
+    }
+  });
+
+  setSlide(0, false);
 }
 
