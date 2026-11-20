@@ -1,68 +1,41 @@
-# AGRO TECH · Primera Empresa AgroTech de Venezuela
-> **Operado por QUANTUN NEXUS C.A. · Potenciada por Corral X Core**  
+# AGRO TECH · Automatización Agropecuaria Manejada por Inteligencia Artificial (IA + ESP32)
+> **Operado por QUANTUM NEXUS C.A. · RIF: J-508019512 · Potenciada por Corral X Core**  
 > **Sede Principal:** Estado Zulia, Venezuela · Cobertura Nacional  
 > **Contacto Oficial:** infocorralx@gmail.com | WhatsApp: +58 422 715 8087 (0422-7158087)
 
 ---
 
-## 🌾 Visión y Manifiesto
-El campo venezolano y latinoamericano enfrenta su mayor encrucijada histórica: la edad promedio del productor rural supera los **57.4 años**, mientras que más del **68% de las nuevas generaciones han migrado o abandonado la actividad agropecuaria**. Este abandono no ocurre por falta de apego a la tierra, sino por el rechazo al **trabajo físico forzoso, extenuante, arcaico y de subsistencia**.
+## 🌾 Visión y Enfoque Tecnológico (Inteligencia Artificial + Controladores ESP32)
+El campo venezolano y latinoamericano enfrenta su mayor encrucijada histórica: la edad promedio del productor rural supera los **57.4 años**, mientras que más del **68% de las nuevas generaciones han migrado o abandonado la actividad agropecuaria**.
 
-**AGRO TECH** nace como la primera compañía de tecnología agropecuaria en Venezuela con el objetivo de erradicar el trabajo forzoso mediante **enjambres de drones autónomos, maquinaria no tripulada con inteligencia artificial, sistemas agénticos de riego y monitoreo pecuario en tiempo real**, integrados con el ecosistema de comercialización directa de **Corral X**.
-
----
-
-## 🏛️ Los 4 Pilares de Autonomía Agropecuaria
-1. **Pilar 01 · Enjambres de Drones Autónomos:** Monitoreo multiespectral NDVI, detección temprana de plagas y fumigación milimétrica ultra-localizada.
-2. **Pilar 02 · Maquinaria No Tripulada & Robótica:** Tractores autónomos guiados por IA y RTK para arado, siembra y cosecha continua 24/7.
-3. **Pilar 03 · Riego Agéntico & Automatización de Cultivos:** Drones de pulverización y electroválvulas solares inteligentes que reducen hasta un 45% el consumo de agua y diésel según humedad de suelo.
-4. **Pilar 04 · Monitoreo Pecuario & Animal en Tiempo Real:** Aretes electrónicos inteligentes, trazabilidad biométrica, conteo aéreo por visión térmica y geocercas virtuales anti-abigeato.
+**AGRO TECH (QUANTUM NEXUS C.A.)** es una empresa AgroTech con **soluciones de automatización manejadas por Inteligencia Artificial (IA)**: agentes autónomos, modelos predictivos y redes neuronales Edge AI que deciden y optimizan 24/7, ejecutados en campo sobre **controladores ESP32 (ESP32-S3, ESP32-P4, ESP32-C6 y ESP32-CAM)** con LoRaWAN 915 MHz, RS485 Modbus y energía solar LiFePO4, integrados con **Corral X**.
 
 ---
 
-## 🐂 Corral X · App Ganadero a Ganadero (P2P)
-* **Venta Directa P2P:** Plataforma para compra y venta de lotes de ganado directamente entre ganaderos sin intermediarios tradicionales.
-* **IA Predictiva de Precios:** Algoritmos que analizan series temporales del mercado cárnico y lechero para proyectar el mejor momento de venta y el precio justo por kilo en pie.
-* **Estimación Biométrica y Pesaje Digital:** Algoritmos de visión computarizada para cálculo referencial del pesaje en pie.
+## 🏛️ Los 4 Pilares de Automatización ESP32
+1. **Pilar 01 · Riego Solar & Sensores de Suelo ESP32 (`ESP32-S3 + LoRa 915 MHz`):** Electroválvulas biestables solares y sondas RS485 IP68 (humedad, temperatura, CE y NPK), más monitoreo de pozos, tanques y clima local con ahorro de hasta 45% en agua y diésel.
+2. **Pilar 02 · Siembra Indoor, Invernaderos & Hidroponía (`ESP32-S3 / C6`):** Control climático PID por Déficit de Presión de Vapor (VPD), iluminación LED PWM y fertirriego automático pH/EC con aislamiento galvánico y bombas peristálticas, incluyendo módulos de Forraje Verde Hidropónico (FVH).
+3. **Pilar 03 · Cámaras Edge AI & Visión Artificial (`ESP32-CAM / ESP32-P4 + ESP-DL`):** Trampas inteligentes de plagas con TinyML/Edge Impulse, inspección visual HD MIPI-CSI, pesaje biométrico en manga y centinelas nocturnos anti-abigeato con alertas fotográficas a WhatsApp.
+4. **Pilar 04 · Pecuario, Cadena de Frío, Energía Solar & Corral X (`ESP32 + RS485 / VFD / BMS`):** Monitoreo de tanques de leche (`≤ 4 °C`), cercas eléctricas anti-corte, boyas acuícolas (Oxígeno Disuelto/pH), supervisión Modbus de bombeo solar VFD y microredes LiFePO4, enlazados a **Corral X**.
 
 ---
 
-## 🎨 Estética E-Ink Brutalista (Tendencias 2026)
-1. **Paleta E-Ink Papel & Carbón:** Papel cálido (`#F4F3EE`), carbón profundo (`#121312`) y verde institucional (`#345C33`).
-2. **Interruptor Dual E-Ink:** Conmutador táctico `[ 📜 PAPEL / ⬛ CARBÓN ]` permanente en la barra de navegación con animación de refresco electroforético de partículas.
-3. **Matriz Técnica de Navegación (Blueprint Matrix):** Activador `[ ⊞ ÍNDICE [M] ]` que abre una cabina táctica de 8 cuadrantes para acceso instantáneo a todas las áreas del sistema.
-4. **Tipografía Técnica:** *Space Grotesk* e *IBM Plex Mono*.
+## 🔬 Catálogo Interactivo de I+D (22 Soluciones ESP32)
+Abrir [`catalogo-ideas-agrotech.html`](catalogo-ideas-agrotech.html) para explorar, filtrar por chip ESP32 (`ESP32-S3`, `ESP32-P4`, `ESP32-CAM`, `ESP32-C6`), ver en modo presentación y exportar soluciones seleccionadas.
 
 ---
 
 ## 📂 Estructura del Repositorio
-```
+```text
 agrotech_web/
-├── .gitignore                  # Exclusión de archivos temporales y de sistema
-├── index.html                  # Landing page completa, semántica y responsiva
-├── README.md                   # Documentación técnica y especificaciones
+├── index.html                   # Landing principal 100% ESP32 + Corral X
+├── catalogo-ideas-agrotech.html # Catálogo y presentación interactiva (22 soluciones ESP32)
+├── README.md                    # Documentación del proyecto
+├── robots.txt / sitemap.xml     # SEO técnico
+├── llms.txt / llms-full.txt     # Descubrimiento para modelos de lenguaje (LLMO)
+├── .htaccess / nginx-agrotech.conf # Configuraciones de producción
 └── assets/
-    ├── css/
-    │   └── styles.css          # Sistema de diseño E-Ink 2026, variables, sombras táctiles
-    ├── js/
-    │   └── app.js              # Lógica de cliente: Calculadora ROI, Copilot IA, Audio Web API, Easter Egg
-    └── images/
-        ├── logo.svg            # Logotipo oficial vectorizado nítido
-        ├── logo.jpg            # Archivo de imagen institucional
-        ├── favicon.svg         # Favicon institucional
-        ├── hero-drone.jpg           # Pilar 01: Dron autónomo en Portuguesa
-        ├── autonomous-machinery.jpg # Pilar 02: Tractor no tripulado RTK
-        ├── drone-irrigation.jpg     # Pilar 03: Dron de pulverización y riego agéntico
-        └── livestock-corralx.jpg    # Pilar 04: Telemetría y subastas ganaderas Corral X
+    ├── css/styles.css           # Sistema de diseño E-Ink Papel / Carbón
+    ├── js/app.js                # Calculadora ROI, Formulario, Matriz [M], Copilot IA, Dossier
+    └── images/                  # Emblema insecto microprocesador (logo.svg / favicon.svg) + WebP/JPG
 ```
-
----
-
-## 🚀 Despliegue en Servidor de Producción
-Al tratarse de una arquitectura **Jamstack pura (HTML5, CSS3, JavaScript Vanilla)** sin dependencias de Node.js o compilación pesada:
-* **Rendimiento:** Carga instantánea con tiempo de respuesta < 200ms.
-* **Compatibilidad:** 100% compatible con cualquier servidor web:
-  * **Nginx / Apache / LiteSpeed:** Copiar los archivos en el directorio web (`/var/www/html/` o `public_html/`).
-  * **GitHub Pages:** Activar en *Settings > Pages* seleccionando la rama `main`.
-  * **Cloudflare Pages / Vercel / Netlify:** Despliegue directo conectando el repositorio de GitHub.
-

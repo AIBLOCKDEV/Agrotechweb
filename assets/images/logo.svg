@@ -1,49 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 210" width="100%" height="100%">
   <defs>
     <style>
       .logo-text {
         font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         font-weight: 800;
-        font-size: 52px;
-        letter-spacing: 0.22em;
-        fill: #1c1d1d;
+        font-size: 48px;
+        letter-spacing: 0.2em;
+        fill: #121312;
       }
-      .dark-mode .logo-text {
-        fill: #f3f2ee;
+      .logo-sub {
+        font-family: 'IBM Plex Mono', Consolas, monospace;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.16em;
+        fill: #345C33;
       }
-      .leaf-fill {
-        fill: #355E32;
-      }
-      .stem {
-        stroke: #355E32;
-        stroke-width: 5.5;
-        stroke-linecap: round;
-        fill: none;
-      }
-      .vein {
-        stroke: #ffffff;
-        stroke-width: 2.2;
-        stroke-linecap: round;
-        fill: none;
-        opacity: 0.7;
-      }
+      .pcb-stroke { stroke: #345C33; stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .body-fill { fill: #345C33; stroke: #121312; stroke-width: 2.2; stroke-linejoin: round; }
+      .die-trace { stroke: #F4F3EE; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .pad { fill: #F4F3EE; stroke: #345C33; stroke-width: 2.8; }
+      .eye { fill: #F4F3EE; }
     </style>
   </defs>
 
-  <!-- Group for leaves and stem icon -->
-  <g transform="translate(300, 75)">
-    <!-- Stem -->
-    <path d="M 0,32 Q -1,15 -3,0" class="stem" />
-    
-    <!-- Left Leaf -->
-    <path d="M -3,0 C -18,-2 -34,-12 -38,-28 C -36,-38 -20,-42 -4,-28 C 4,-20 0,-5 -3,0 Z" class="leaf-fill" />
-    <path d="M -4,-2 C -15,-12 -26,-24 -32,-30" class="vein" />
-    
-    <!-- Right Leaf -->
-    <path d="M -3,0 C 14,-2 32,-14 36,-32 C 34,-42 16,-46 0,-30 C -8,-22 -3,-5 -3,0 Z" class="leaf-fill" />
-    <path d="M -3,-2 C 12,-12 24,-24 30,-32" class="vein" />
+  <!-- Microprocessor Insect Emblem (Centered at 300, 62) -->
+  <g transform="translate(252, 12)">
+    <!-- RF / LoRa PCB Antennae -->
+    <polyline points="41,24 33,13 24,10" class="pcb-stroke" />
+    <polyline points="55,24 63,13 72,10" class="pcb-stroke" />
+    <circle cx="22" cy="10" r="3.4" class="pad" />
+    <circle cx="74" cy="10" r="3.4" class="pad" />
+
+    <!-- 6 Articulated IC-Pin PCB Legs -->
+    <!-- Front pair -->
+    <polyline points="30,42 19,42 11,30" class="pcb-stroke" />
+    <circle cx="10" cy="28" r="3.2" class="pad" />
+    <polyline points="66,42 77,42 85,30" class="pcb-stroke" />
+    <circle cx="86" cy="28" r="3.2" class="pad" />
+
+    <!-- Middle pair -->
+    <polyline points="29,55 15,55 8,62" class="pcb-stroke" />
+    <circle cx="7" cy="63" r="3.2" class="pad" />
+    <polyline points="67,55 81,55 88,62" class="pcb-stroke" />
+    <circle cx="89" cy="63" r="3.2" class="pad" />
+
+    <!-- Rear pair -->
+    <polyline points="32,68 20,68 13,81" class="pcb-stroke" />
+    <circle cx="12" cy="83" r="3.2" class="pad" />
+    <polyline points="64,68 76,68 83,81" class="pcb-stroke" />
+    <circle cx="84" cy="83" r="3.2" class="pad" />
+
+    <!-- Sensor Head -->
+    <polygon points="38,24 58,24 61,34 35,34" class="body-fill" />
+    <circle cx="43" cy="29" r="2.1" class="eye" />
+    <circle cx="53" cy="29" r="2.1" class="eye" />
+
+    <!-- Microprocessor Beetle Carapace -->
+    <polygon points="32,37 64,37 67,45 65,69 56,81 40,81 31,69 29,45" class="body-fill" />
+
+    <!-- Internal Microprocessor Silicon Die & Circuit Buses -->
+    <rect x="39.5" y="46.5" width="17" height="17" rx="2" class="die-trace" />
+    <rect x="44.5" y="51.5" width="7" height="7" fill="#F4F3EE" />
+
+    <!-- Die Bus Traces -->
+    <line x1="48" y1="37" x2="48" y2="46.5" class="die-trace" />
+    <line x1="48" y1="63.5" x2="48" y2="81" class="die-trace" />
+    <polyline points="39.5,51 34,51 34,44" class="die-trace" />
+    <polyline points="56.5,51 62,51 62,44" class="die-trace" />
+    <polyline points="39.5,59 34,59 34,68" class="die-trace" />
+    <polyline points="56.5,59 62,59 62,68" class="die-trace" />
   </g>
 
   <!-- Typography -->
-  <text x="300" y="155" text-anchor="middle" class="logo-text">AGRO TECH</text>
+  <text x="300" y="156" text-anchor="middle" class="logo-text">AGRO TECH</text>
+  <text x="300" y="182" text-anchor="middle" class="logo-sub">QUANTUM NEXUS C.A. · RIF J-508019512</text>
 </svg>

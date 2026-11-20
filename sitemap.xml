@@ -6,85 +6,53 @@
   <!-- Página Principal / Landing Oficial AGRO TECH & Corral X -->
   <url>
     <loc>https://aiblockdev.github.io/Agrotechweb/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    
-    <!-- Imagen Principal: Dron Autónomo Agrícola -->
+
     <image:image>
-      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/hero-drone.jpg</image:loc>
-      <image:title>AGRO TECH · Enjambre de Drones Autónomos en Portuguesa, Venezuela</image:title>
-      <image:caption>Monitoreo multiespectral NDVI y erradicación del trabajo forzoso en el campo venezolano.</image:caption>
+      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/hero-esp32-farm.jpg</image:loc>
+      <image:title>AGRO TECH · Automatización Agropecuaria 100% ESP32 en Venezuela</image:title>
+      <image:caption>Nodos solares IP67 con controladores ESP32-S3, red LoRa 915 MHz, invernaderos y sensores de suelo.</image:caption>
     </image:image>
 
-    <!-- Imagen Maquinaria Autónoma -->
     <image:image>
-      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/autonomous-machinery.jpg</image:loc>
-      <image:title>Tractores y Maquinaria Autónoma Guiada por IA y Navegación RTK</image:title>
-      <image:caption>Robótica agrícola para arado y siembra continua 24/7 sin operador a bordo.</image:caption>
+      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/pillar-esp32-irrigation.jpg</image:loc>
+      <image:title>Pilar 01 · Riego Solar y Sensores de Suelo RS485 con ESP32</image:title>
+      <image:caption>Electroválvulas solares biestables y sondas subterráneas de humedad, temperatura, CE y NPK.</image:caption>
     </image:image>
 
-    <!-- Imagen Riego Agéntico -->
     <image:image>
-      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/drone-irrigation.jpg</image:loc>
-      <image:title>Riego Agéntico y Pulverización Inteligente por Dron</image:title>
-      <image:caption>Ahorro de hasta 45% de agua y diésel mediante microcontroladores solares y sensores de humedad.</image:caption>
+      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/pillar-esp32-indoor.jpg</image:loc>
+      <image:title>Pilar 02 · Siembra Indoor, Invernaderos e Hidroponía ESP32</image:title>
+      <image:caption>Control climático VPD, iluminación LED y fertirriego pH/EC automático con bombas peristálticas.</image:caption>
     </image:image>
 
-    <!-- Imagen Corral X Ganadería -->
+    <image:image>
+      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/pillar-esp32-vision.jpg</image:loc>
+      <image:title>Pilar 03 · Cámaras Edge AI y Visión Artificial ESP32-CAM y ESP32-P4</image:title>
+      <image:caption>Detección local de plagas foliares y vigilancia perimetral nocturna anti-abigeato.</image:caption>
+    </image:image>
+
+    <image:image>
+      <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/pillar-esp32-livestock-solar.jpg</image:loc>
+      <image:title>Pilar 04 · Cadena de Frío Láctea, Bombeo Solar VFD y Cercas IoT ESP32</image:title>
+      <image:caption>Monitoreo de tanques de leche, energía solar off-grid y cercas eléctricas en ganadería venezolana.</image:caption>
+    </image:image>
+
     <image:image>
       <image:loc>https://aiblockdev.github.io/Agrotechweb/assets/images/livestock-corralx.jpg</image:loc>
       <image:title>Corral X · Venta Ganadero a Ganadero con IA Predictiva de Precios</image:title>
-      <image:caption>Plataforma P2P ganadera, telemetría biométrica de ganado y geocercas virtuales anti-abigeato.</image:caption>
+      <image:caption>Plataforma P2P ganadera sin intermediarios conectada con telemetría ESP32.</image:caption>
     </image:image>
   </url>
 
-  <!-- Sección: Soluciones IA y 4 Pilares de Autonomía -->
+  <!-- Catálogo Interactivo de Soluciones 100% ESP32 -->
   <url>
-    <loc>https://aiblockdev.github.io/Agrotechweb/#servicios</loc>
-    <lastmod>2026-09-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Sección: Corral X · Venta Directa P2P Ganadero a Ganadero -->
-  <url>
-    <loc>https://aiblockdev.github.io/Agrotechweb/#corralx</loc>
-    <lastmod>2026-09-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Sección: Calculadora de Vulnerabilidad y Retorno de Inversión (ROI) -->
-  <url>
-    <loc>https://aiblockdev.github.io/Agrotechweb/#calculadora</loc>
-    <lastmod>2026-09-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Sección: Preguntas Frecuentes Técnicas (FAQ & AEO Direct Answers) -->
-  <url>
-    <loc>https://aiblockdev.github.io/Agrotechweb/#faq</loc>
-    <lastmod>2026-09-06</lastmod>
+    <loc>https://aiblockdev.github.io/Agrotechweb/catalogo-ideas-agrotech.html</loc>
+    <lastmod>2026-11-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-
-  <!-- Sección: Voces del Campo (Casos de Éxito de Productores) -->
-  <url>
-    <loc>https://aiblockdev.github.io/Agrotechweb/#testimonios</loc>
-    <lastmod>2026-09-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Sección: Solicitud de Auditoría y Contacto (Sede Estado Zulia) -->
-  <url>
-    <loc>https://aiblockdev.github.io/Agrotechweb/#contacto</loc>
-    <lastmod>2026-09-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
   </url>
 
 </urlset>

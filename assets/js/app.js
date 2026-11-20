@@ -6,7 +6,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   initThemeToggle();
   initCalculator();
-  initTelemetryHUD();
   initAuditForm();
   initAudioFeedback();
   initBlueprintMenu();
@@ -15,6 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
   initAIAssistant();
   initDossierModal();
 });
+
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function trapFocus(container, event) {
+  if (event.key !== 'Tab' || !container) return;
+  const focusable = container.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  );
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
 
 /* ==========================================================================
    1. E-Ink Screen Refresh & Dual Theme Toggle (Papel / Carbón)
@@ -31,11 +51,13 @@ function initThemeToggle() {
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       playTactileClick();
-      // Genuine E-Ink particle flash
-      document.body.classList.add('e-ink-refreshing');
-      setTimeout(() => {
-        document.body.classList.remove('e-ink-refreshing');
-      }, 400);
+      if (!prefersReducedMotion()) {
+        // Genuine E-Ink particle flash
+        document.body.classList.add('e-ink-refreshing');
+        setTimeout(() => {
+          document.body.classList.remove('e-ink-refreshing');
+        }, 400);
+      }
 
       const activeTheme = document.documentElement.getAttribute('data-theme');
       const newTheme = activeTheme === 'dark' ? 'light' : 'dark';
@@ -47,6 +69,10 @@ function initThemeToggle() {
   }
 
   function updateThemeButtonUI(theme) {
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute('content', theme === 'dark' ? '#111211' : '#F4F3EE');
+    }
     if (badgePaper && badgeCarbon) {
       if (theme === 'dark') {
         badgeCarbon.classList.add('active');
@@ -182,6 +208,8 @@ function initCalculator() {
   const paybackMesesDisplay = document.getElementById('paybackMeses');
   const continuidadDisplay = document.getElementById('continuidadDisplay');
 
+  if (!hectareasInput || !edadInput || !obrerosInput) return;
+
   function calculate() {
     const ha = parseInt(hectareasInput.value, 10) || 100;
     const edad = parseInt(edadInput.value, 10) || 55;
@@ -190,7 +218,7 @@ function initCalculator() {
     // Display updates
     valHectareas.textContent = `${ha.toLocaleString()} Ha`;
     valEdad.textContent = `${edad} AÑOS`;
-    valObreros.textContent = `${obreros} TRABAJADORES`;
+    valObreros.textContent = `${obreros} ${obreros === 1 ? 'TRABAJADOR' : 'TRABAJADORES'}`;
 
     // 1. Vulnerability Calculation (Base 0 - 100)
     // Factores: edad avanzada (>55 acelera riesgo), dependencia manual de obreros
@@ -199,22 +227,18 @@ function initCalculator() {
     let totalVuln = Math.min(98, Math.round(ageRisk + laborRisk + 12));
 
     let riskCategory = 'MODERADO';
-    let badgeBg = '#EBF2EA';
-    let badgeColor = '#345C33';
+    let badgeModifier = 'vuln-badge--moderate';
 
     if (totalVuln >= 75) {
       riskCategory = 'CRÍTICO · ALERTA ROJA';
-      badgeBg = '#FDF2F2';
-      badgeColor = '#B52B27';
+      badgeModifier = 'vuln-badge--critical';
     } else if (totalVuln >= 50) {
       riskCategory = 'ALTO RIESGO DE DESERCIÓN';
-      badgeBg = '#FFF8E6';
-      badgeColor = '#B8740A';
+      badgeModifier = 'vuln-badge--high';
     }
 
     vulnScoreBadge.textContent = `${totalVuln}% [${riskCategory}]`;
-    vulnScoreBadge.style.backgroundColor = badgeBg;
-    vulnScoreBadge.style.color = badgeColor;
+    vulnScoreBadge.className = `vuln-badge ${badgeModifier}`;
     vulnLabel.textContent = `Índice de Vulnerabilidad de Continuidad sin Relevo`;
 
     // 2. Horas de trabajo forzoso erradicadas con agentes y drones
@@ -253,67 +277,12 @@ function initCalculator() {
 }
 
 /* ==========================================================================
-   4. Live Telemetry HUD: Corral X Autonomous Fleet Simulation
-   ========================================================================== */
-function initTelemetryHUD() {
-  const feedContainer = document.getElementById('hudFeedBody');
-  if (!feedContainer) return;
-
-  const mockEvents = [
-    { source: 'DRON-01 [PORTUGUESA]', type: 'success', msg: 'Escaneo multiespectral de 240 Ha completado en Turén. Cero estrés hídrico detectado.' },
-    { source: 'RIEGO-AUT-04 [GUÁRICO]', type: 'info', msg: 'Calabozo: Microcontrolador solar activó bombeo por déficit de humedad volumétrica (-18%).' },
-    { source: 'CORRAL-X CORE [BARINAS]', type: 'success', msg: 'Telemetría pecuaria lote 44: Ganancia ponderada +1.15 kg/día. Dispersión óptima.' },
-    { source: 'TRACTOR-ROBOT-02 [ANZOÁTEGUI]', type: 'info', msg: 'Surcado autónomo nocturno completado. 38 Ha labradas con 0 intervención humana.' },
-    { source: 'DRON-FUMIG-08 [ZULIA]', type: 'alert', msg: 'Foco de insectos localizado en cuadrante Sur-3. Aplicación de biológico ultra-preciso en curso.' },
-    { source: 'CORRAL-X APP', type: 'success', msg: 'Trato P2P cerrado: 120 novillos comercializados directo de ganadero a ganadero con precio óptimo proyectado por IA.' },
-    { source: 'CENTRO DE CONTROL', type: 'info', msg: 'Red agéntica nacional operando al 99.98% de disponibilidad solar.' }
-  ];
-
-  let eventIndex = 0;
-
-  function addLogEvent() {
-    const ev = mockEvents[eventIndex % mockEvents.length];
-    eventIndex++;
-
-    const now = new Date();
-    const timeStr = now.toTimeString().split(' ')[0] + '.' + String(Math.floor(now.getMilliseconds() / 100));
-
-    const row = document.createElement('div');
-    row.className = `hud-log-row ${ev.type}`;
-    row.innerHTML = `
-      <span class="hud-time">[${timeStr}]</span>
-      <span class="hud-source">${ev.source}</span>
-      <span class="hud-msg">${ev.msg}</span>
-    `;
-
-    feedContainer.appendChild(row);
-
-    // Keep log max length
-    while (feedContainer.children.length > 25) {
-      feedContainer.removeChild(feedContainer.firstChild);
-    }
-
-    // Auto-scroll
-    feedContainer.scrollTop = feedContainer.scrollHeight;
-  }
-
-  // Initial populate
-  for (let i = 0; i < 4; i++) {
-    addLogEvent();
-  }
-
-  // Interval for continuous live feed
-  setInterval(() => {
-    addLogEvent();
-  }, 4500);
-}
-
-/* ==========================================================================
-   5. Formulario de Auditoría y Enlace Directo a WhatsApp
+   4. Formulario de Auditoría y Enlace Directo a WhatsApp
    ========================================================================== */
 function initAuditForm() {
   const form = document.getElementById('auditForm');
   const whatsappBtn = document.getElementById('whatsappDirectBtn');
+  const statusBox = document.getElementById('auditFormStatus');
 
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -328,7 +297,18 @@ function initAuditForm() {
       const email = document.getElementById('auditEmail') ? document.getElementById('auditEmail').value.trim() : '';
       const telefono = document.getElementById('auditTelefono').value.trim();
 
-      const mensaje = `Hola AGRO TECH / QUANTUN NEXUS. Solicito Auditoría Tecnológica para mi unidad de producción.%0A%0A` +
+      const plainSummary =
+        `Hola AGRO TECH / QUANTUM NEXUS. Solicito Auditoría Tecnológica para mi unidad de producción.\n\n` +
+        `Productor/Contacto: ${nombre}\n` +
+        `Finca / Empresa: ${finca}\n` +
+        `Ubicación: ${estado}, Venezuela\n` +
+        `Extensión: ${ha} Hectáreas\n` +
+        `Rubro: ${rubro}\n` +
+        `Correo: ${email}\n` +
+        `Teléfono: ${telefono}\n\n` +
+        `Deseo erradicar el trabajo forzoso y automatizar mi producción con Corral X.`;
+
+      const mensajeWa = `Hola AGRO TECH / QUANTUM NEXUS. Solicito Auditoría Tecnológica para mi unidad de producción.%0A%0A` +
         `*Productor/Contacto:* ${encodeURIComponent(nombre)}%0A` +
         `*Finca / Empresa:* ${encodeURIComponent(finca)}%0A` +
         `*Ubicación:* ${encodeURIComponent(estado)}, Venezuela%0A` +
@@ -338,10 +318,20 @@ function initAuditForm() {
         `*Teléfono:* ${encodeURIComponent(telefono)}%0A%0A` +
         `Deseo erradicar el trabajo forzoso y automatizar mi producción con Corral X.`;
 
+      const waUrl = `https://api.whatsapp.com/send?phone=584227158087&text=${mensajeWa}`;
+      const mailtoSubject = encodeURIComponent(`Nueva Auditoría de Finca: ${finca} (${estado}) - ${nombre}`);
+      const mailtoBody = encodeURIComponent(plainSummary);
+      const mailtoUrl = `mailto:infocorralx@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
+
       const submitBtn = form.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = `ENVIANDO A INFOCORRALX@GMAIL.COM...`;
+      submitBtn.innerHTML = `ENVIANDO SOLICITUD...`;
       submitBtn.disabled = true;
+
+      if (statusBox) {
+        statusBox.hidden = true;
+        statusBox.innerHTML = '';
+      }
 
       // Send structured data directly to official mailbox: infocorralx@gmail.com
       const payload = {
@@ -364,31 +354,62 @@ function initAuditForm() {
         },
         body: JSON.stringify(payload)
       })
-      .then(res => res.json())
-      .catch(err => {
-        console.warn("Direct email delivery note:", err);
+      .then(async (res) => {
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (_) {
+          // Non-JSON response body
+        }
+        if (!res.ok || (data && (data.success === false || data.success === 'false'))) {
+          throw new Error((data && data.message) || `Error HTTP ${res.status}`);
+        }
+        return data;
       })
-      .finally(() => {
+      .then(() => {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `✓ ENVIADO A INFOCORRALX@GMAIL.COM`;
-        submitBtn.style.backgroundColor = 'var(--green-primary)';
-        submitBtn.style.color = '#FFFFFF';
+        submitBtn.innerHTML = `✓ SOLICITUD ENVIADA`;
+        form.reset();
 
-        // Also launch direct WhatsApp communication
-        const waUrl = `https://api.whatsapp.com/send?phone=584227158087&text=${mensaje}`;
-        window.open(waUrl, '_blank');
+        if (statusBox) {
+          statusBox.hidden = false;
+          statusBox.className = 'form-status form-status--success';
+          statusBox.innerHTML = `
+            <strong>✓ Solicitud enviada a infocorralx@gmail.com.</strong>
+            <span>Para atención inmediata, también puedes abrir el resumen prellenado en WhatsApp:</span>
+            <div class="form-status-actions">
+              <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Abrir resumen en WhatsApp 💬</a>
+            </div>
+          `;
+        }
 
         setTimeout(() => {
           submitBtn.innerHTML = originalText;
-          submitBtn.style.backgroundColor = '';
-          submitBtn.style.color = '';
         }, 6000);
+      })
+      .catch((err) => {
+        console.error("Error enviando solicitud de auditoría:", err);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+
+        if (statusBox) {
+          statusBox.hidden = false;
+          statusBox.className = 'form-status form-status--error';
+          statusBox.innerHTML = `
+            <strong>No se pudo confirmar el envío automático por correo en este momento.</strong>
+            <span>Tus datos ya están preparados: envíalos en un clic por WhatsApp o desde tu cliente de correo:</span>
+            <div class="form-status-actions">
+              <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Enviar por WhatsApp 💬</a>
+              <a href="${mailtoUrl}" class="btn btn-outline btn-sm">Enviar por Correo ✉️</a>
+            </div>
+          `;
+        }
       });
     });
   }
 
   if (whatsappBtn) {
-    whatsappBtn.addEventListener('click', (e) => {
+    whatsappBtn.addEventListener('click', () => {
       playTactileClick();
     });
   }
@@ -409,18 +430,21 @@ function initBlueprintMenu() {
   if (!toggleBtn || !overlay) return;
 
   const matrixCards = overlay.querySelectorAll('.matrix-card');
+  let previousFocus = null;
 
   function openMatrix() {
     playTactileClick();
+    previousFocus = document.activeElement;
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
     toggleBtn.setAttribute('aria-expanded', 'true');
     toggleBtn.classList.add('active');
     if (label) label.textContent = '✕ CERRAR';
     document.body.style.overflow = 'hidden';
+    if (closeBtn) setTimeout(() => closeBtn.focus(), 50);
   }
 
-  function closeMatrix() {
+  function closeMatrix(restoreFocus = true) {
     playTactileClick();
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
@@ -428,6 +452,9 @@ function initBlueprintMenu() {
     toggleBtn.classList.remove('active');
     if (label) label.textContent = 'ÍNDICE';
     document.body.style.overflow = '';
+    if (restoreFocus && previousFocus && typeof previousFocus.focus === 'function') {
+      previousFocus.focus();
+    }
   }
 
   toggleBtn.addEventListener('click', (e) => {
@@ -439,14 +466,14 @@ function initBlueprintMenu() {
     }
   });
 
-  if (closeBtn) closeBtn.addEventListener('click', closeMatrix);
-  if (backdrop) backdrop.addEventListener('click', closeMatrix);
-  if (matrixCtaBtn) matrixCtaBtn.addEventListener('click', closeMatrix);
+  if (closeBtn) closeBtn.addEventListener('click', () => closeMatrix(true));
+  if (backdrop) backdrop.addEventListener('click', () => closeMatrix(true));
+  if (matrixCtaBtn) matrixCtaBtn.addEventListener('click', () => closeMatrix(false));
 
   matrixCards.forEach(card => {
     if (card.tagName.toLowerCase() === 'a') {
       card.addEventListener('click', () => {
-        closeMatrix();
+        closeMatrix(false);
       });
     }
   });
@@ -455,17 +482,10 @@ function initBlueprintMenu() {
   if (openDossierCard) {
     const handleDossierClick = (e) => {
       e.preventDefault();
-      closeMatrix();
+      closeMatrix(false);
       const openDesktopBtn = document.getElementById('openDossierBtn');
       if (openDesktopBtn) {
         openDesktopBtn.click();
-      } else {
-        const modal = document.getElementById('dossierModal');
-        if (modal) {
-          modal.classList.add('open');
-          modal.setAttribute('aria-hidden', 'false');
-          document.body.style.overflow = 'hidden';
-        }
       }
     };
     openDossierCard.addEventListener('click', handleDossierClick);
@@ -476,16 +496,25 @@ function initBlueprintMenu() {
     });
   }
 
-  // Keyboard accessibility: ESC closes, [M] toggles
+  // Keyboard accessibility: ESC closes, TAB trapped when open, [M] toggles
   document.addEventListener('keydown', (e) => {
+    if (overlay.classList.contains('open')) {
+      if (e.key === 'Escape') {
+        closeMatrix(true);
+        return;
+      }
+      if (e.key === 'Tab') {
+        trapFocus(overlay, e);
+        return;
+      }
+    }
+
     const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName);
     if (isTyping) return;
 
-    if (e.key === 'Escape' && overlay.classList.contains('open')) {
-      closeMatrix();
-    } else if ((e.key === 'm' || e.key === 'M') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    if ((e.key === 'm' || e.key === 'M') && !e.ctrlKey && !e.metaKey && !e.altKey) {
       if (overlay.classList.contains('open')) {
-        closeMatrix();
+        closeMatrix(true);
       } else {
         openMatrix();
       }
@@ -555,13 +584,20 @@ function initGrassEngine() {
   const ambientCanvas = document.getElementById('ambientGrassCanvas');
   if (ambientCanvas) {
     const ctx = ambientCanvas.getContext('2d');
-    let width = ambientCanvas.width = window.innerWidth;
-    let height = ambientCanvas.height = window.innerHeight;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
 
-    window.addEventListener('resize', () => {
-      width = ambientCanvas.width = window.innerWidth;
-      height = ambientCanvas.height = window.innerHeight;
-    }, { passive: true });
+    function resizeAmbientCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      ambientCanvas.width = Math.round(width * dpr);
+      ambientCanvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    resizeAmbientCanvas();
+    window.addEventListener('resize', resizeAmbientCanvas, { passive: true });
 
     // Generate ~35 floating organic grass blades & airborne seeds
     const particleCount = Math.min(45, Math.max(20, Math.floor(window.innerWidth / 35)));
@@ -990,9 +1026,13 @@ function initGrassEngine() {
       let blades = [];
 
       function setupBlades() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const rect = gCanvas.parentElement.getBoundingClientRect();
-        gWidth = gCanvas.width = rect.width;
-        gHeight = gCanvas.height = 85;
+        gWidth = rect.width;
+        gHeight = 85;
+        gCanvas.width = Math.round(gWidth * dpr);
+        gCanvas.height = Math.round(gHeight * dpr);
+        gCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
         blades = [];
 
         const count = Math.floor(gWidth / densityFactor);
@@ -1184,8 +1224,10 @@ function initGrassEngine() {
     if (droneCanvas) {
       droneCtx = droneCanvas.getContext('2d');
       function resizeDroneCanvas() {
-        droneCanvas.width = window.innerWidth;
-        droneCanvas.height = window.innerHeight;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        droneCanvas.width = Math.round(window.innerWidth * dpr);
+        droneCanvas.height = Math.round(window.innerHeight * dpr);
+        droneCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
       resizeDroneCanvas();
       window.addEventListener('resize', resizeDroneCanvas, { passive: true });
@@ -1460,7 +1502,7 @@ function initGrassEngine() {
     function updateDroneFlock(time) {
       if (!droneCtx || activeDrones.length === 0) return;
 
-      droneCtx.clearRect(0, 0, droneCanvas.width, droneCanvas.height);
+      droneCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       const dt = 16.6;
 
@@ -1474,12 +1516,12 @@ function initGrassEngine() {
       }
 
       if (activeDrones.length === 0) {
-        droneCtx.clearRect(0, 0, droneCanvas.width, droneCanvas.height);
+        droneCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       }
     }
 
-    // Interacción táctil en ramitas SVG del logotipo y de las tarjetas
-    document.querySelectorAll('.brand-sprout, .corner-grass').forEach(ramita => {
+    // Interacción táctil en el emblema de microprocesador y ramitas SVG de tarjetas
+    document.querySelectorAll('.brand-emblem, .corner-grass').forEach(ramita => {
       ramita.addEventListener('click', () => {
         playTactileClick();
         ramita.classList.remove('ramita-jiggling');
@@ -1515,29 +1557,35 @@ function initGrassEngine() {
     });
 
     // ------------------------------------------------------------------------
-    // Master Animation Loop (Efficient 60FPS with Tab Sleep)
+    // Master Animation Loop (Efficient 60FPS with Tab Sleep & Reduced Motion)
     // ------------------------------------------------------------------------
     let animationId = null;
-    function masterLoop(time) {
-      if (!document.hidden) {
-        renderAmbient(time);
-        if (heroGround) heroGround.update(time);
-        if (footerGround) footerGround.update(time);
-        updateDroneFlock(time);
-      }
-      animationId = requestAnimationFrame(masterLoop);
-    }
-
-    animationId = requestAnimationFrame(masterLoop);
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      } else if (!document.hidden && !animationId) {
+    if (prefersReducedMotion()) {
+      // Render a single crisp static grass horizon when reduced motion is enabled
+      if (heroGround) heroGround.update(0);
+      if (footerGround) footerGround.update(0);
+    } else {
+      function masterLoop(time) {
+        if (!document.hidden) {
+          renderAmbient(time);
+          if (heroGround) heroGround.update(time);
+          if (footerGround) footerGround.update(time);
+          updateDroneFlock(time);
+        }
         animationId = requestAnimationFrame(masterLoop);
       }
-    });
+
+      animationId = requestAnimationFrame(masterLoop);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        } else if (!document.hidden && !animationId) {
+          animationId = requestAnimationFrame(masterLoop);
+        }
+      });
+    }
   }
 }
 
@@ -1605,7 +1653,17 @@ function initAIAssistant() {
   }
 
   fabBtn.addEventListener('click', () => toggleChat());
-  if (closeBtn) closeBtn.addEventListener('click', () => toggleChat(false));
+  if (closeBtn) closeBtn.addEventListener('click', () => {
+    toggleChat(false);
+    fabBtn.focus();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && chatDrawer.classList.contains('open')) {
+      toggleChat(false);
+      fabBtn.focus();
+    }
+  });
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
@@ -1700,68 +1758,75 @@ function initAIAssistant() {
   function generateResponse(input) {
     const q = input.toLowerCase();
 
-    // 1. Internet / Cobertura / Señal
+    // 1. Internet / Cobertura / Señal / LoRa / ESP32
     if (q.includes('internet') || q.includes('señal') || q.includes('starlink') || q.includes('lora') || q.includes('cobertura') || q.includes('comunicaci')) {
-      return `<strong>No dependes de cobertura celular ni cables telefónicos.</strong><br><br>
-        En AGRO TECH desplegamos una <strong>red mallada LoRaWAN</strong> de hasta 15 km de alcance punto a punto conectada a un terminal satelital Starlink instalado en el casco de tu finca.<br><br>
-        Tus drones, tractores, válvulas de riego y aretes de ganado envían datos en tiempo real de forma 100% autónoma.`;
+      return `<strong>No dependes de señal celular ni de cables en tus potreros.</strong><br><br>
+        Todos nuestros nodos usan <strong>controladores ESP32-S3 y transceptores LoRa SX1262 (915 MHz)</strong> creando una red mallada de hasta 15 km de alcance punto a punto, más soporte <strong>ESP-NOW</strong> entre módulos cercanos.<br><br>
+        Los sensores de suelo, válvulas de riego, cámaras ESP32 y monitores de tanques o cercas reportan a un gateway local (con enlace Starlink/4G opcional) sin pagar chips celulares por nodo.`;
     }
 
-    // 2. Combustible / Diésel / Gasolina / Luz / Electricidad
-    if (q.includes('combustible') || q.includes('diesel') || q.includes('diésel') || q.includes('luz') || q.includes('electricidad') || q.includes('gasolina') || q.includes('bater')) {
-      return `<strong>Cero dependencia del tendido eléctrico tradicional.</strong><br><br>
-        Todas las cuadrillas operan con <strong>Estaciones Solares Híbridas Móviles</strong> con baterías LiFePO4 de carga rápida.<br><br>
-        • El riego inteligente ahorra hasta un <strong>42% de diésel</strong> en bombas al irrigar solo por humedad del suelo.<br>
-        • Los drones pulverizan con motores eléctricos brushless, eliminando el gasto de diésel de tractores pesados para fumigación.`;
+    // 2. Combustible / Diésel / Energía / Solar / Baterías / Luz
+    if (q.includes('combustible') || q.includes('diesel') || q.includes('diésel') || q.includes('luz') || q.includes('electricidad') || q.includes('gasolina') || q.includes('bater') || q.includes('solar') || q.includes('energ')) {
+      return `<strong>Soluciones energéticas rurales supervisadas por ESP32:</strong><br><br>
+        • <strong>Bombeo Solar VFD + ESP32:</strong> controla bombas sumergibles directo desde paneles solares (sin baterías costosas) y detiene el bombeo automáticamente si baja el pozo o se llena el tanque.<br>
+        • <strong>Microredes LiFePO4 + BMS ESP32:</strong> monitoreo 24/7 de carga, voltaje y alarmas en salas de ordeño, cuartos fríos y nodos de campo.<br>
+        • <strong>Ahorro directo:</strong> el riego por demanda con sensores RS485 + ESP32 reduce hasta un <strong>45% de agua y diésel</strong>.`;
     }
 
-    // 3. Ganado / Corral X / Precios / App / Vacas / Ganaderos
-    if (q.includes('ganad') || q.includes('vaca') || q.includes('búfalo') || q.includes('bufalo') || q.includes('corral') || q.includes('arete') || q.includes('abigeato') || q.includes('app') || q.includes('pesaje') || (q.includes('precio') && (q.includes('ganado') || q.includes('vaca') || q.includes('kilo')))) {
-      return `<strong>Corral X: La app que conecta ganaderos directamente (P2P):</strong><br><br>
-        • <strong>Venta Ganadero a Ganadero:</strong> Compra y vende lotes directamente entre productores, sin intermediarios comisionistas ni deducciones abusivas.<br>
-        • <strong>IA Predictiva de Precios:</strong> Algoritmos de Machine Learning que analizan los ciclos de mercado ganadero para predecir precios futuros y decirte exactamente cuándo y a qué precio es más conveniente vender.<br>
-        • <strong>Pesaje Digital & Estimación por IA:</strong> Estimación biométrica precisa de kilos en pie para negociar con certidumbre y transparencia.<br>
-        • <strong>Tratos Seguros desde tu Teléfono:</strong> Trazabilidad del lote, verificación sanitaria y acuerdos directos con divisa garantizada.`;
+    // 3. Ganado / Corral X / Leche / Abigeato / Cercas
+    if (q.includes('ganad') || q.includes('vaca') || q.includes('búfalo') || q.includes('bufalo') || q.includes('corral') || q.includes('arete') || q.includes('abigeato') || q.includes('app') || q.includes('pesaje') || q.includes('leche') || q.includes('cerca')) {
+      return `<strong>Ecosistema Pecuario ESP32 + App Corral X (P2P):</strong><br><br>
+        • <strong>Venta Ganadero a Ganadero (Corral X):</strong> compra y vende lotes sin intermediarios con <strong>IA Predictiva de Precios</strong> y estimación biométrica.<br>
+        • <strong>Tanques de Leche & Cadena de Frío ESP32:</strong> alerta inmediata a WhatsApp si el tanque supera los 4 °C o falla el compresor.<br>
+        • <strong>Cercas Eléctricas & Bebederos ESP32 LoRa:</strong> detecta cortes anti-abigeato y bebederos secos en potreros remotos.`;
     }
 
-    // 4. Repuestos / Soporte / Sede / Zulia / Venezuela / Garantía
+    // 4. Indoor / Hidroponía / Invernadero / VPD / pH / Riego
+    if (q.includes('indoor') || q.includes('hidropon') || q.includes('invernader') || q.includes('vpd') || q.includes('ph') || q.includes('riego') || q.includes('forraje') || q.includes('humedad') || q.includes('sensor')) {
+      return `<strong>Automatización de Riego, Invernaderos & Siembra Indoor con ESP32:</strong><br><br>
+        • <strong>Riego de Campo (ESP32-S3 + RS485):</strong> sondas IP68 de humedad, temperatura, CE y NPK activan electroválvulas solares biestables automáticamente.<br>
+        • <strong>Invernaderos & VPD (ESP32-S3/C6):</strong> calcula el Déficit de Presión de Vapor (VPD) y acciona extractores, nebulización e iluminación LED.<br>
+        • <strong>Hidroponía & Forraje Verde (FVH):</strong> dosificación automática de pH y EC con aislamiento galvánico y bombas peristálticas guiadas por ESP32.`;
+    }
+
+    // 5. Cámaras / Visión IA / Plagas / ESP32-CAM / ESP32-P4 / Inteligencia Artificial
+    if (q.includes('cámara') || q.includes('camara') || q.includes('vision') || q.includes('visión') || q.includes('imagen') || q.includes('plaga') || q.includes('esp32') || q.includes('especifica') || q.includes('hardware') || q.includes('inteligencia') || q.includes(' ia')) {
+      return `<strong>Automatización manejada por Inteligencia Artificial sobre controladores ESP32:</strong><br><br>
+        La <strong>IA es el cerebro</strong> que predice riego, optimiza el clima, detecta plagas y alerta anomalías; nuestros <strong>controladores ESP32</strong> ejecutan cada decisión en campo:<br><br>
+        • <strong>IA Hídrica & Energía (ESP32-S3 + LoRa 915 MHz):</strong> predice cuándo regar, protege bombas solares VFD, tanques de leche y cercas.<br>
+        • <strong>Visión Edge AI (ESP32-CAM / ESP32-P4 + ESP-DL):</strong> redes neuronales en el chip para trampas de plagas, inspección foliar y centinela nocturno anti-abigeato.<br>
+        • <strong>IA Climática Indoor (ESP32-S3 / C6):</strong> controla VPD, luz LED y fertirriego pH/EC 24/7.<br><br>
+        👉 <a href="catalogo-ideas-agrotech.html" style="text-decoration: underline; font-weight: bold; color: var(--green-primary);">Explora el Catálogo Interactivo IA + ESP32 (22 Soluciones)</a>.`;
+    }
+
+    // 6. Repuestos / Soporte / Sede / Zulia / Venezuela / Garantía
     if (q.includes('repuesto') || q.includes('soporte') || q.includes('mantenimiento') || q.includes('garant') || q.includes('repar') || q.includes('taller') || q.includes('sede') || q.includes('zulia') || q.includes('donde') || q.includes('dónde') || q.includes('ubicaci')) {
-      return `<strong>Sede Principal en el Estado Zulia & Despliegue Nacional:</strong><br><br>
-        Nuestra <strong>Sede Principal y Base de Operaciones de QUANTUN NEXUS C.A.</strong> está ubicada en el <strong>Estado Zulia, Venezuela</strong>.<br><br>
-        • <strong>Almacén Central:</strong> Inventario permanente de repuestos originales (motores brushless, rotores, bombas de alta presión, antenas LoRa y módulos RTK).<br>
-        • <strong>Cobertura Nacional:</strong> Cuadrillas técnicas móviles e ingenieros de campo con atención directa en finca en todo el territorio venezolano.<br>
-        • <strong>Garantía Oficial:</strong> Respaldo técnico continuo sin esperas de importación.`;
+      return `<strong>Sede Principal en el Estado Zulia & Ensamblaje Local ESP32:</strong><br><br>
+        Nuestra sede operativa de <strong>QUANTUM NEXUS C.A. (RIF: J-508019512)</strong> está en el <strong>Estado Zulia, Venezuela</strong>.<br><br>
+        • <strong>Stock Permanente ESP32:</strong> placas ESP32-S3, ESP32-CAM, ESP32-P4/C6, radios LoRa 915 MHz, sensores RS485 IP68, sondas pH/EC y electroválvulas solares.<br>
+        • <strong>Cobertura Nacional:</strong> instalación en finca, calibración y soporte directo sin esperas de importación.`;
     }
 
-    // 5. Capacitación / Juventud / Personal / Hijos
+    // 7. Capacitación / Juventud / Personal / Hijos
     if (q.includes('capacita') || q.includes('personal') || q.includes('hijo') || q.includes('joven') || q.includes('aprender') || q.includes('curso') || q.includes('manejo')) {
-      return `<strong>Transformamos el trabajo forzoso en empleo tecnológico atractivo:</strong><br><br>
-        Los hijos de productores y jóvenes de la zona se capacitan en menos de <strong>5 días hábiles</strong>. En lugar de empuñar un machete o cargar una mochila de 25 kg bajo el sol, aprenden a comandar enjambres de drones y tractores RTK desde una tablet con aire acondicionado.<br><br>
-        ¡Esto frena la migración juvenil y garantiza el relevo de tu finca!`;
+      return `<strong>Transformamos el trabajo forzoso en operación técnica moderna:</strong><br><br>
+        Los hijos de productores y encargados se capacitan en solo <strong>3 días de entrenamiento en campo</strong>. Aprenden a supervisar nodos ESP32, riego solar, cámaras de visión IA y ventas en Corral X desde su teléfono o tablet.<br><br>
+        ¡Esto frena la migración juvenil y garantiza el relevo generacional de tu finca!`;
     }
 
-    // 6. Auditoría / Precio / Cuánto cuesta / Contratar / Visita
+    // 8. Auditoría / Precio / Cuánto cuesta / Contratar / Visita
     if (q.includes('auditor') || q.includes('precio') || q.includes('costo') || q.includes('cuanto') || q.includes('cuánto') || q.includes('visita') || q.includes('cotiza') || q.includes('contacto')) {
-      return `<strong>Puedes solicitar tu Auditoría Técnica de Finca hoy mismo:</strong><br><br>
-        Nuestro equipo de ingenieros realiza un sobrevuelo multiespectral NDVI, levantamiento topográfico y mapa de prioridades sin compromiso en los estados de cobertura.<br><br>
-        👉 <a href="#contacto" style="text-decoration: underline; font-weight: bold; color: var(--green-primary);">Completa el formulario al final de la página</a> o escríbenos directamente a WhatsApp: <a href="https://wa.me/584227158087" target="_blank" style="text-decoration: underline; font-weight: bold;">+58 422 715 8087</a>.`;
-    }
-
-    // 7. Drones / Pulverización / Fumigación / Especificaciones
-    if (q.includes('dron') || q.includes('fumig') || q.includes('pulveriz') || q.includes('hectarea') || q.includes('especifica')) {
-      return `<strong>Especificaciones de nuestro AGRO-DRONE V4:</strong><br><br>
-        • Capacidad: Tanque de 40 Litros con bomba dual de alta presión.<br>
-        • Pulverización: 8 boquillas centrífugas rotativas con control de gota de 50 a 500 micras.<br>
-        • Rendimiento: Hasta <strong>18 Hectáreas por hora</strong> (120+ Ha por jornada diaria).<br>
-        • Navegación: Posicionamiento RTK milimétrico con radar omnidireccional antiobstáculos.`;
+      return `<strong>Solicita tu Auditoría Técnica de Finca hoy mismo:</strong><br><br>
+        Evaluamos tus puntos críticos de riego, energía solar, cultivos indoor o ganadería y diseñamos un plan modular 100% basado en controladores ESP32 con retorno rápido.<br><br>
+        👉 <a href="#contacto" style="text-decoration: underline; font-weight: bold; color: var(--green-primary);">Completa el formulario al final de la página</a> o escríbenos por WhatsApp: <a href="https://wa.me/584227158087" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; font-weight: bold;">+58 422 715 8087</a>.`;
     }
 
     // Default Fallback
     return `Gracias por tu consulta sobre el futuro de tu unidad de producción.<br><br>
-      En <strong>AGRO TECH (QUANTUN NEXUS C.A.)</strong>, con sede principal en el <strong>Estado Zulia</strong>, estamos listos para asesorarte con enjambres de drones, riego solar agéntico, maquinaria RTK y la app <strong>Corral X</strong> (conexión directa ganadero a ganadero con IA predictiva de precios).<br><br>
-      💬 <strong>Canal Inmediato WhatsApp:</strong> <a href="https://wa.me/584227158087" target="_blank" style="text-decoration: underline; font-weight: 700;">+58 422 715 8087</a> (0422-7158087)<br>
+      En <strong>AGRO TECH (QUANTUM NEXUS C.A. · RIF: J-508019512)</strong>, con sede en el <strong>Estado Zulia</strong>, desarrollamos <strong>soluciones de automatización agropecuaria manejadas por Inteligencia Artificial</strong> sobre <strong>controladores ESP32</strong> (riego predictivo, siembra indoor/hidroponía, visión Edge AI, energía solar y monitoreo pecuario/lácteo) integradas con la app <strong>Corral X</strong>.<br><br>
+      💬 <strong>WhatsApp Directo:</strong> <a href="https://wa.me/584227158087" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; font-weight: 700;">+58 422 715 8087</a> (0422-7158087)<br>
       ✉️ <strong>Correo Central:</strong> <a href="mailto:infocorralx@gmail.com" style="text-decoration: underline; font-weight: 700;">infocorralx@gmail.com</a><br><br>
-      <em>O déjanos tus datos en el formulario de auditoría técnica en la página.</em>`;
+      <em>Pregúntame cómo nuestra IA automatiza tu riego, cultivos indoor, cámaras, energía o ganado.</em>`;
   }
 }
 
@@ -1771,41 +1836,48 @@ function initAIAssistant() {
 function initDossierModal() {
   const modal = document.getElementById('dossierModal');
   const openDesktopBtn = document.getElementById('openDossierBtn');
-  const openMobileBtn = document.getElementById('openDossierMobileBtn');
   const closeBtn = document.getElementById('closeDossierBtn');
   const backdrop = document.getElementById('dossierBackdrop');
   const dossierCtaBtn = document.getElementById('dossierCtaBtn');
 
   if (!modal) return;
+  let previousFocus = null;
 
   function openModal() {
     playTactileClick();
+    previousFocus = document.activeElement;
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    if (closeBtn) setTimeout(() => closeBtn.focus(), 50);
   }
 
-  function closeModal() {
+  function closeModal(restoreFocus = true) {
     playTactileClick();
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (restoreFocus && previousFocus && typeof previousFocus.focus === 'function') {
+      previousFocus.focus();
+    }
   }
 
   if (openDesktopBtn) openDesktopBtn.addEventListener('click', openModal);
-  if (openMobileBtn) openMobileBtn.addEventListener('click', openModal);
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  if (backdrop) backdrop.addEventListener('click', closeModal);
+  if (closeBtn) closeBtn.addEventListener('click', () => closeModal(true));
+  if (backdrop) backdrop.addEventListener('click', () => closeModal(true));
 
   if (dossierCtaBtn) {
     dossierCtaBtn.addEventListener('click', () => {
-      closeModal();
+      closeModal(false);
     });
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) {
-      closeModal();
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') {
+      closeModal(true);
+    } else if (e.key === 'Tab') {
+      trapFocus(modal, e);
     }
   });
 }

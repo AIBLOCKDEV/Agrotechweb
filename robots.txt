@@ -1,5 +1,5 @@
 # ==============================================================================
-# AGRO TECH · QUANTUN NEXUS C.A. · Robots Exclusion & AI Discovery Protocol
+# AGRO TECH · QUANTUM NEXUS C.A. (RIF: J-508019512) · Robots Exclusion & AI Discovery Protocol
 # Standard Search Engines & AI Search Engines (GEO / AEO / LLMO Enabled)
 # ==============================================================================
 
@@ -71,6 +71,5 @@ Sitemap: https://aiblockdev.github.io/Agrotechweb/sitemap.xml
 # Alternate production domain:
 # Sitemap: https://agrotech.com.ve/sitemap.xml
 
-# LLM Discovery Standard
-# Reference: https://llmstxt.org
-Sitemap: https://aiblockdev.github.io/Agrotechweb/llms.txt
+# LLM Discovery Standard (https://llmstxt.org)
+# Context file available at: /llms.txt and /llms-full.txt

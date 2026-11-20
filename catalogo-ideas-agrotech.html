@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F4F3EE">
+  <title>Catálogo Interactivo de Automatización con IA + ESP32 · AGRO TECH · QUANTUM NEXUS C.A. (RIF: J-508019512)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2026.20">
+  <link rel="shortcut icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2026.20">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap">
+  <style>
+    :root {
+      --bg-canvas: #F4F3EE;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #EAE9E3;
+      --ink-primary: #121312;
+      --ink-secondary: #4A4E48;
+      --ink-tertiary: #727770;
+      --ink-inverse: #F4F3EE;
+
+      --green-primary: #345C33;
+      --green-hover: #264325;
+      --green-light: #EBF2EA;
+      --accent-blue: #1D4ED8;
+      --accent-blue-bg: #EFF6FF;
+      --accent-amber: #B45309;
+      --accent-amber-bg: #FFFBEB;
+      --accent-purple: #6D28D9;
+      --accent-purple-bg: #F5F3FF;
+
+      --panel-dark-bg: #121312;
+      --panel-dark-ink: #F4F3EE;
+      --panel-dark-muted: #B6BBB3;
+      --panel-dark-accent: #63AA60;
+
+      --border-w: 1.5px;
+      --border-bold: 2.5px;
+      --border-color: #121312;
+      --border-muted: #D1CFBF;
+
+      --shadow: 3px 3px 0 #121312;
+      --shadow-lg: 6px 6px 0 #121312;
+
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Space Grotesk', var(--font-sans);
+      --font-mono: 'IBM Plex Mono', Consolas, monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg-canvas: #111211;
+      --bg-surface: #181A18;
+      --bg-subtle: #222522;
+      --ink-primary: #F4F3EE;
+      --ink-secondary: #B6BBB3;
+      --ink-tertiary: #8B9188;
+      --ink-inverse: #111211;
+
+      --green-primary: #4E8A4B;
+      --green-hover: #63AA60;
+      --green-light: #1A2819;
+      --accent-blue: #60A5FA;
+      --accent-blue-bg: #172554;
+      --accent-amber: #FBBF24;
+      --accent-amber-bg: #2D2310;
+      --accent-purple: #C4B5FD;
+      --accent-purple-bg: #2E1065;
+
+      --panel-dark-bg: #0A0B0A;
+      --border-color: #F4F3EE;
+      --border-muted: #383D37;
+      --shadow: 3px 3px 0 #F4F3EE;
+      --shadow-lg: 6px 6px 0 #F4F3EE;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--bg-canvas);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+      background-image: radial-gradient(circle at 1px 1px, rgba(18,19,18,0.045) 1px, transparent 0);
+      background-size: 24px 24px;
+      padding-bottom: 5.5rem;
+    }
+    [data-theme="dark"] body {
+      background-image: radial-gradient(circle at 1px 1px, rgba(244,243,238,0.05) 1px, transparent 0);
+    }
+
+    .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* Top Header */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg-canvas);
+      border-bottom: var(--border-bold) solid var(--border-color);
+    }
+    .topbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 0.72rem 0; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: inherit; }
+    .brand-emblem { width: 34px; height: 34px; display: block; flex-shrink: 0; }
+    .brand-emblem .bug-pcb { stroke: var(--green-primary); }
+    .brand-emblem .bug-body { fill: var(--green-primary); stroke: var(--ink-primary); }
+    .brand-emblem .bug-pad { fill: var(--bg-canvas); stroke: var(--green-primary); }
+    .brand-emblem .bug-die { stroke: var(--bg-canvas); }
+    .brand-emblem .bug-core { fill: var(--bg-canvas); }
+
+    .brand-title { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.1; }
+    .brand-sub { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: var(--green-primary); text-transform: uppercase; }
+
+    .topbar-controls { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+      font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;
+      text-transform: uppercase; text-decoration: none; letter-spacing: 0.04em;
+      padding: 0.5rem 0.85rem; border: var(--border-w) solid var(--border-color);
+      background: var(--bg-surface); color: var(--ink-primary); box-shadow: var(--shadow);
+      cursor: pointer; transition: transform 110ms ease, box-shadow 110ms ease, background 110ms ease;
+    }
+    .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--border-color); }
+    .btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--border-color); }
+    .btn-primary { background: var(--green-primary); color: #fff; }
+    .btn-primary:hover { background: var(--green-hover); }
+    .btn-active { background: var(--ink-primary); color: var(--ink-inverse); }
+    .btn-sm { padding: 0.38rem 0.68rem; font-size: 0.7rem; }
+
+    .badge-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 20px; padding: 0 5px;
+      background: #fff; color: #121312; border: 1px solid #121312;
+      font-size: 0.68rem; font-weight: 800;
+    }
+
+    /* Hero Banner */
+    .hero {
+      padding: 2.25rem 0 2rem;
+      border-bottom: var(--border-bold) solid var(--border-color);
+    }
+    .hero-top-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.9rem; }
+    .pill {
+      font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      padding: 0.25rem 0.6rem; border: 1px solid var(--border-color); background: var(--bg-surface);
+      display: inline-flex; align-items: center; gap: 0.35rem;
+    }
+    .pill-green { background: var(--green-light); color: var(--green-primary); border-color: var(--green-primary); }
+    .pill-blue { background: var(--accent-blue-bg); color: var(--accent-blue); border-color: var(--accent-blue); }
+    .pill-purple { background: var(--accent-purple-bg); color: var(--accent-purple); border-color: var(--accent-purple); }
+
+    .hero h1 {
+      font-family: var(--font-display); font-size: clamp(1.7rem, 3.3vw, 2.75rem);
+      line-height: 1.12; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 0.75rem;
+    }
+    .hero h1 span { color: var(--green-primary); }
+    .hero-desc { max-width: 80ch; font-size: 0.98rem; color: var(--ink-secondary); margin-bottom: 1.5rem; }
+
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.9rem;
+    }
+    .stat-card {
+      background: var(--bg-surface); border: var(--border-w) solid var(--border-color);
+      box-shadow: var(--shadow); padding: 0.9rem 1.05rem;
+    }
+    .stat-num { font-family: var(--font-mono); font-size: 1.65rem; font-weight: 700; color: var(--green-primary); line-height: 1.1; }
+    .stat-lbl { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; color: var(--ink-secondary); margin-top: 0.2rem; }
+
+    /* Mode Tabs */
+    .mode-bar {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: 0.85rem; padding: 1.25rem 0 1rem;
+    }
+    .mode-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    /* Filter Toolbar */
+    .filter-panel {
+      background: var(--bg-surface); border: var(--border-bold) solid var(--border-color);
+      box-shadow: var(--shadow); padding: 1.1rem 1.25rem; margin-bottom: 1.5rem;
+      display: flex; flex-direction: column; gap: 0.9rem;
+    }
+    .filter-row { display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
+    .search-input {
+      flex: 1 1 240px; font-family: var(--font-mono); font-size: 0.82rem;
+      padding: 0.55rem 0.85rem; background: var(--bg-canvas); color: var(--ink-primary);
+      border: var(--border-w) solid var(--border-color); outline: none;
+    }
+    .search-input:focus { border-color: var(--green-primary); }
+    .filter-select {
+      font-family: var(--font-mono); font-size: 0.76rem; font-weight: 600;
+      padding: 0.55rem 0.7rem; background: var(--bg-canvas); color: var(--ink-primary);
+      border: var(--border-w) solid var(--border-color);
+    }
+    .cat-chips { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .cat-chip {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      padding: 0.36rem 0.7rem; border: 1.5px solid var(--border-color);
+      background: var(--bg-canvas); color: var(--ink-primary); cursor: pointer;
+    }
+    .cat-chip.active { background: var(--green-primary); color: #fff; border-color: var(--border-color); }
+
+    /* Ideas Grid */
+    .ideas-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.25rem;
+    }
+    .idea-card {
+      background: var(--bg-surface); border: var(--border-bold) solid var(--border-color);
+      box-shadow: var(--shadow); display: flex; flex-direction: column;
+      transition: transform 130ms ease, box-shadow 130ms ease;
+    }
+    .idea-card:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow-lg); }
+    .idea-card.selected { border-color: var(--green-primary); box-shadow: 5px 5px 0 var(--green-primary); }
+
+    .card-head {
+      padding: 0.8rem 1rem; border-bottom: var(--border-w) solid var(--border-muted);
+      background: var(--bg-subtle); display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .card-code { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; color: var(--ink-secondary); }
+    .card-badges { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .tag {
+      font-family: var(--font-mono); font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
+      padding: 0.16rem 0.45rem; border: 1px solid currentColor;
+    }
+    .tag-exists { background: var(--accent-blue-bg); color: var(--accent-blue); }
+    .tag-new { background: var(--accent-purple-bg); color: var(--accent-purple); }
+    .tag-high { background: var(--green-light); color: var(--green-primary); }
+    .tag-med { background: var(--accent-amber-bg); color: var(--accent-amber); }
+    .tag-mcu { background: var(--panel-dark-bg); color: var(--panel-dark-accent); border-color: var(--border-color); }
+
+    .card-body { padding: 1.05rem 1.15rem; display: flex; flex-direction: column; gap: 0.65rem; flex: 1; }
+    .card-top-row { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .card-cat { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; color: var(--green-primary); text-transform: uppercase; }
+    .card-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; line-height: 1.25; }
+    .card-summary { font-size: 0.85rem; color: var(--ink-secondary); line-height: 1.5; }
+
+    .card-meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+      padding-top: 0.65rem; border-top: 1px dashed var(--border-muted); margin-top: auto;
+    }
+    .meta-box { background: var(--bg-canvas); border: 1px solid var(--border-muted); padding: 0.45rem 0.6rem; }
+    .meta-k { font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-tertiary); text-transform: uppercase; display: block; }
+    .meta-v { font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--ink-primary); }
+
+    .hw-line {
+      font-family: var(--font-mono); font-size: 0.71rem; color: var(--ink-secondary);
+      background: var(--bg-subtle); padding: 0.45rem 0.65rem; border-left: 3px solid var(--green-primary);
+    }
+
+    .card-foot {
+      padding: 0.75rem 1rem; border-top: var(--border-w) solid var(--border-muted);
+      display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+    }
+    .select-toggle {
+      flex: 1; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      padding: 0.48rem 0.7rem; border: var(--border-w) solid var(--border-color);
+      background: var(--bg-canvas); color: var(--ink-primary); cursor: pointer;
+    }
+    .select-toggle.is-selected {
+      background: var(--green-primary); color: #fff; border-color: var(--border-color);
+    }
+
+    /* Priority Matrix View */
+    .matrix-section { display: none; }
+    .matrix-section.active { display: block; }
+    .quad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .quad-box {
+      background: var(--bg-surface); border: var(--border-bold) solid var(--border-color);
+      box-shadow: var(--shadow); padding: 1.25rem;
+    }
+    .quad-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.85rem; padding-bottom: 0.6rem; border-bottom: 1.5px solid var(--border-muted); }
+    .quad-title { font-family: var(--font-display); font-size: 1.02rem; font-weight: 700; text-transform: uppercase; }
+    .quad-list { display: flex; flex-direction: column; gap: 0.55rem; }
+    .quad-item {
+      display: flex; justify-content: space-between; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 0.7rem; background: var(--bg-canvas); border: 1px solid var(--border-muted);
+      font-size: 0.82rem; cursor: pointer;
+    }
+    .quad-item .btn { white-space: nowrap; flex-shrink: 0; }
+    .quad-item:hover { border-color: var(--green-primary); }
+
+    /* Presentation / Slides View */
+    .slides-section { display: none; }
+    .slides-section.active { display: block; }
+    .slide-stage {
+      background: var(--bg-surface); border: var(--border-bold) solid var(--border-color);
+      box-shadow: var(--shadow-lg); min-height: 540px; display: flex; flex-direction: column;
+    }
+    .slide-topbar {
+      background: var(--panel-dark-bg); color: var(--panel-dark-ink);
+      padding: 0.7rem 1.25rem; display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-mono); font-size: 0.74rem; gap: 1rem; flex-wrap: wrap;
+    }
+    .slide-content { padding: 2rem; flex: 1; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; }
+    .slide-title { font-family: var(--font-display); font-size: clamp(1.35rem, 2.4vw, 2rem); line-height: 1.15; margin: 0.45rem 0 0.85rem; }
+    .slide-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin: 1rem 0; }
+    .slide-bullets li { display: flex; gap: 0.55rem; font-size: 0.9rem; color: var(--ink-secondary); }
+    .slide-bullets li::before { content: "→"; color: var(--green-primary); font-family: var(--font-mono); font-weight: 800; }
+    .slide-arch-box {
+      background: var(--bg-subtle); border: var(--border-w) solid var(--border-color);
+      padding: 1.1rem; display: flex; flex-direction: column; gap: 0.85rem;
+    }
+    .slide-nav {
+      padding: 0.9rem 1.25rem; border-top: var(--border-w) solid var(--border-color);
+      background: var(--bg-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;
+    }
+    .slide-progress { font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; }
+
+    /* Modal Detail & Selection Drawer */
+    .modal {
+      position: fixed; inset: 0; z-index: 900; display: none; align-items: center; justify-content: center;
+      padding: 1rem; background: rgba(18, 19, 18, 0.78); backdrop-filter: blur(4px);
+    }
+    .modal.open { display: flex; }
+    .modal-dialog {
+      width: min(860px, 100%); max-height: 90vh; background: var(--bg-surface);
+      border: var(--border-bold) solid var(--border-color); box-shadow: 8px 8px 0 var(--border-color);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .modal-head {
+      padding: 1rem 1.35rem; background: var(--bg-subtle); border-bottom: var(--border-w) solid var(--border-color);
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+    }
+    .modal-body { padding: 1.35rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.15rem; }
+    .modal-foot {
+      padding: 0.9rem 1.35rem; background: var(--bg-subtle); border-top: var(--border-w) solid var(--border-color);
+      display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    }
+
+    .arch-diagram {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.4rem;
+      flex-wrap: wrap; padding: 0.85rem; background: var(--bg-canvas); border: 1.5px dashed var(--border-color);
+      font-family: var(--font-mono); font-size: 0.72rem;
+    }
+    .arch-node {
+      flex: 1 1 110px; text-align: center; padding: 0.55rem 0.45rem;
+      background: var(--bg-surface); border: 1.5px solid var(--border-color); font-weight: 700;
+    }
+    .arch-arrow { font-weight: 800; color: var(--green-primary); }
+
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+    .detail-box { border: 1px solid var(--border-muted); background: var(--bg-canvas); padding: 0.85rem 1rem; }
+    .detail-box h4 { font-family: var(--font-mono); font-size: 0.72rem; color: var(--green-primary); text-transform: uppercase; margin-bottom: 0.35rem; }
+    .detail-box p, .detail-box ul { font-size: 0.86rem; color: var(--ink-secondary); }
+    .detail-box ul { padding-left: 1.1rem; }
+
+    .export-textarea {
+      width: 100%; min-height: 220px; font-family: var(--font-mono); font-size: 0.78rem;
+      padding: 0.85rem; background: var(--bg-canvas); color: var(--ink-primary);
+      border: var(--border-w) solid var(--border-color); resize: vertical;
+    }
+    .note-input {
+      width: 100%; font-family: var(--font-mono); font-size: 0.78rem;
+      padding: 0.55rem 0.75rem; background: var(--bg-canvas); color: var(--ink-primary);
+      border: 1.5px solid var(--border-color);
+    }
+
+    /* Floating Selection Bar */
+    .selection-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--panel-dark-bg); color: var(--panel-dark-ink);
+      border-top: var(--border-bold) solid var(--green-primary);
+      padding: 0.7rem 1.25rem;
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .selection-info { font-family: var(--font-mono); font-size: 0.78rem; }
+    .selection-info strong { color: var(--panel-dark-accent); }
+
+    .toast {
+      position: fixed; top: 76px; right: 20px; z-index: 1200;
+      background: var(--green-primary); color: #fff; border: 2px solid var(--border-color);
+      box-shadow: var(--shadow); padding: 0.65rem 1rem; font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;
+      opacity: 0; pointer-events: none; transform: translateY(-8px); transition: all 180ms ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .slide-content, .quad-grid, .detail-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .ideas-grid { grid-template-columns: 1fr; }
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+      .slide-content { padding: 1.15rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="index.html" class="brand">
+        <svg class="brand-emblem" viewBox="0 0 96 96" width="34" height="34" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Emblema Insecto Microprocesador AGRO TECH">
+          <polyline points="41,24 33,13 24,10" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <polyline points="55,24 63,13 72,10" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="22" cy="10" r="3.6" class="bug-pad" stroke-width="3" />
+          <circle cx="74" cy="10" r="3.6" class="bug-pad" stroke-width="3" />
+          <polyline points="30,42 19,42 11,30" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="10" cy="28" r="3.4" class="bug-pad" stroke-width="3" />
+          <polyline points="66,42 77,42 85,30" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="86" cy="28" r="3.4" class="bug-pad" stroke-width="3" />
+          <polyline points="29,55 15,55 8,62" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="7" cy="63" r="3.4" class="bug-pad" stroke-width="3" />
+          <polyline points="67,55 81,55 88,62" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="89" cy="63" r="3.4" class="bug-pad" stroke-width="3" />
+          <polyline points="32,68 20,68 13,81" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="12" cy="83" r="3.4" class="bug-pad" stroke-width="3" />
+          <polyline points="64,68 76,68 83,81" class="bug-pcb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="84" cy="83" r="3.4" class="bug-pad" stroke-width="3" />
+          <polygon points="38,24 58,24 61,34 35,34" class="bug-body" stroke-width="2.4" stroke-linejoin="round" />
+          <circle cx="43" cy="29" r="2.2" class="bug-core" />
+          <circle cx="53" cy="29" r="2.2" class="bug-core" />
+          <polygon points="32,37 64,37 67,45 65,69 56,81 40,81 31,69 29,45" class="bug-body" stroke-width="2.4" stroke-linejoin="round" />
+          <rect x="39.5" y="46.5" width="17" height="17" rx="2" class="bug-die" stroke-width="2.5" />
+          <rect x="44.5" y="51.5" width="7" height="7" class="bug-core" />
+          <line x1="48" y1="37" x2="48" y2="46.5" class="bug-die" stroke-width="2.4" />
+          <line x1="48" y1="63.5" x2="48" y2="81" class="bug-die" stroke-width="2.4" />
+          <polyline points="39.5,51 34,51 34,44" class="bug-die" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <polyline points="56.5,51 62,51 62,44" class="bug-die" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <polyline points="39.5,59 34,59 34,68" class="bug-die" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <polyline points="56.5,59 62,59 62,68" class="bug-die" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <div>
+          <div class="brand-title">AGRO TECH · LABORATORIO IA + ESP32</div>
+          <div class="brand-sub">QUANTUM NEXUS C.A. · RIF: J-508019512</div>
+        </div>
+      </a>
+
+      <div class="topbar-controls">
+        <a href="index.html" class="btn btn-sm">← Volver a la Web</a>
+        <button type="button" id="themeBtn" class="btn btn-sm">📜 Papel / ⬛ Carbón</button>
+        <button type="button" id="openSelectionBtn" class="btn btn-primary btn-sm">
+          <span>⭐ Mi Selección</span>
+          <span class="badge-count" id="selectedCountTop">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-top-tags">
+        <span class="pill pill-green">AUTOMATIZACIÓN MANEJADA POR INTELIGENCIA ARTIFICIAL</span>
+        <span class="pill pill-blue">EJECUCIÓN 100% EN CONTROLADORES ESP32</span>
+        <span class="pill pill-purple">AGENTES IA · EDGE AI ESP-DL · LORA 915 MHz</span>
+      </div>
+      <h1>CATÁLOGO DE AUTOMATIZACIÓN <span>MANEJADA POR IA</span> SOBRE CONTROLADORES ESP32</h1>
+      <p class="hero-desc">
+        En <strong>QUANTUM NEXUS C.A.</strong> cada solución combina <strong>Inteligencia Artificial</strong> (agentes autónomos, predicción hídrica/climática, detección de anomalías y visión Edge AI) como cerebro de decisión, con <strong>controladores ESP32 (S3, P4, C6 y CAM)</strong> ejecutando cada orden en campo de forma solar y económica. Revisa las 22 soluciones y marca las que quieres subir a Servicios.
+      </p>
+
+      <div class="stats-strip">
+        <div class="stat-card">
+          <div class="stat-num" id="statTotal">22</div>
+          <div class="stat-lbl">Soluciones IA + ESP32</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statExisting">14</div>
+          <div class="stat-lbl">Arquitecturas Probadas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statNew">8</div>
+          <div class="stat-lbl">Innovaciones Quantum Nexus</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statQuickWins">14</div>
+          <div class="stat-lbl">Viabilidad Inmediata VE</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- View Mode Switcher -->
+    <div class="mode-bar">
+      <div class="mode-tabs" role="tablist" aria-label="Modo de visualización">
+        <button type="button" class="btn btn-active" data-view="catalog">⊞ Explorador ESP32</button>
+        <button type="button" class="btn" data-view="slides">📽️ Modo Presentación (Slides)</button>
+        <button type="button" class="btn" data-view="matrix">🎯 Matriz de Viabilidad (Quick Wins)</button>
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-secondary);">
+        Mostrando <strong id="visibleCount">22</strong> soluciones ESP32
+      </div>
+    </div>
+
+    <!-- CATALOG VIEW -->
+    <section id="catalogView">
+      <div class="filter-panel">
+        <div class="filter-row">
+          <input type="search" id="searchInput" class="search-input" placeholder="Buscar por sensor, protocolo o problema: ESP32-P4, ESP-DL, LoRa, RS485, VPD, pH, leche, solar, cerca...">
+          <select id="mcuFilter" class="filter-select" aria-label="Filtrar por familia ESP32">
+            <option value="all">Chip: Todos los ESP32</option>
+            <option value="ESP32-S3">ESP32-S3 (Todo terreno + SIMD IA)</option>
+            <option value="ESP32-P4">ESP32-P4 + C6 (Visión HD / HMI)</option>
+            <option value="ESP32-CAM">ESP32-CAM (Cámara Ultra-Bajo Costo)</option>
+            <option value="ESP32-C6">ESP32-C6 (Wi-Fi 6 / Zigbee / Bajo Consumo)</option>
+          </select>
+          <select id="originFilter" class="filter-select" aria-label="Filtrar por origen">
+            <option value="all">Origen: Todos</option>
+            <option value="exists">Solo Probadas / Open-Source</option>
+            <option value="new">Solo Propuestas Nuevas Quantum Nexus</option>
+          </select>
+          <select id="viabilityFilter" class="filter-select" aria-label="Filtrar por viabilidad">
+            <option value="all">Viabilidad VE: Todas</option>
+            <option value="inmediata">Inmediata</option>
+            <option value="alta">Alta (Corto Plazo)</option>
+            <option value="media">Media (Proyecto Especial)</option>
+          </select>
+          <button type="button" id="onlySelectedBtn" class="btn btn-sm">⭐ Solo Elegidas</button>
+        </div>
+
+        <div class="cat-chips" id="catChips">
+          <button type="button" class="cat-chip active" data-cat="all">Todas (22)</button>
+          <button type="button" class="cat-chip" data-cat="core">⚡ Core & Tableros ESP32 (4)</button>
+          <button type="button" class="cat-chip" data-cat="vision">📷 Cámaras Edge AI ESP32 (4)</button>
+          <button type="button" class="cat-chip" data-cat="sensores">🌡️ Sensores Suelo/Clima (4)</button>
+          <button type="button" class="cat-chip" data-cat="indoor">🌱 Riego & Siembra Indoor (4)</button>
+          <button type="button" class="cat-chip" data-cat="energia">☀️ Energía Solar & Biogás (3)</button>
+          <button type="button" class="cat-chip" data-cat="monitoreo">📡 Pecuario, Frío & Acuícola (3)</button>
+        </div>
+      </div>
+
+      <div class="ideas-grid" id="ideasGrid"></div>
+    </section>
+
+    <!-- PRESENTATION SLIDES VIEW -->
+    <section id="slidesView" class="slides-section">
+      <div class="slide-stage">
+        <div class="slide-topbar">
+          <span id="slideHeaderCode">SLIDE 01 / 22 · QUANTUM NEXUS C.A. (RIF: J-508019512)</span>
+          <span id="slideHeaderCat">CATEGORÍA</span>
+        </div>
+        <div class="slide-content" id="slideContent"></div>
+        <div class="slide-nav">
+          <div style="display:flex; gap:0.5rem;">
+            <button type="button" id="prevSlideBtn" class="btn btn-sm">← Anterior</button>
+            <button type="button" id="nextSlideBtn" class="btn btn-sm">Siguiente →</button>
+          </div>
+          <span class="slide-progress" id="slideProgress">1 / 22 · Usa flechas ← → del teclado</span>
+          <button type="button" id="slideSelectBtn" class="btn btn-primary btn-sm">+ Seleccionar para Servicios</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIORITY MATRIX VIEW -->
+    <section id="matrixView" class="matrix-section">
+      <div class="quad-grid" id="quadGrid"></div>
+    </section>
+  </main>
+
+  <!-- Fixed Bottom Selection Summary Bar -->
+  <div class="selection-bar">
+    <div class="selection-info">
+      Has seleccionado <strong id="selectedCountBar">0</strong> soluciones <strong>ESP32</strong> para Servicios ·
+      <span id="selectedPreviewText">Haz clic en "+ Seleccionar" en cualquier tarjeta para armar tu portafolio.</span>
+    </div>
+    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+      <button type="button" id="quickSelectTopBtn" class="btn btn-sm">⚡ Preseleccionar Top 6 ESP32</button>
+      <button type="button" id="exportSelectionBtn" class="btn btn-primary btn-sm">📋 Revisar y Exportar Selección</button>
+    </div>
+  </div>
+
+  <!-- Idea Technical Detail Modal -->
+  <div id="detailModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <div>
+          <div id="detailCode" style="font-family:var(--font-mono); font-size:0.72rem; font-weight:700; color:var(--green-primary);"></div>
+          <h2 id="detailTitle" style="font-family:var(--font-display); font-size:1.3rem; margin-top:2px;"></h2>
+        </div>
+        <button type="button" id="closeDetailBtn" class="btn btn-sm" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body" id="detailBody"></div>
+      <div class="modal-foot">
+        <span id="detailBomNote" style="font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-secondary);"></span>
+        <div style="display:flex; gap:0.5rem;">
+          <button type="button" id="detailToggleSelectBtn" class="btn btn-primary btn-sm"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selection Export Modal -->
+  <div id="exportModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <div>
+          <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:700; color:var(--green-primary);">PORTAFOLIO 100% ESP32 · QUANTUM NEXUS C.A. (RIF: J-508019512)</div>
+          <h2 style="font-family:var(--font-display); font-size:1.25rem;">Soluciones ESP32 Elegidas para la Web</h2>
+        </div>
+        <button type="button" id="closeExportBtn" class="btn btn-sm" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.86rem; color:var(--ink-secondary);">
+          Copia este resumen en Markdown y pégalo en el chat para integrar exactamente estas soluciones ESP32 en <code style="font-family:var(--font-mono);">index.html</code>.
+        </p>
+        <textarea id="exportOutput" class="export-textarea" readonly></textarea>
+      </div>
+      <div class="modal-foot">
+        <button type="button" id="clearSelectionBtn" class="btn btn-sm">🗑️ Vaciar Selección</button>
+        <div style="display:flex; gap:0.5rem;">
+          <button type="button" id="downloadMdBtn" class="btn btn-sm">⬇️ Descargar .MD</button>
+          <button type="button" id="copySelectionBtn" class="btn btn-primary btn-sm">📋 Copiar al Portapapeles</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const IDEAS = [
+      // 1. CORE & TABLEROS ESP32
+      {
+        id: 'ESP-01',
+        cat: 'core',
+        catLabel: '⚡ Core & Tableros ESP32',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Controlador Solar de Riego Multizona ESP32-S3 + Válvulas Biestables',
+        summary: 'Estación autónoma de campo con ESP32-S3 en modo deep-sleep, cargador solar MPPT (CN3791), batería LiFePO4 y drivers puente-H para disparar hasta 8 electroválvulas biestables (latching) sin corriente eléctrica ni Wi-Fi.',
+        hardware: 'ESP32-S3 + Radio LoRa SX1262 (915 MHz) + Drivers DRV8871 (latching 9–12V) + Cargador solar MPPT + Batería LiFePO4 + Panel 15W.',
+        venezuelaFit: 'Ideal para lotes de maíz, plátano, pastos de corte y frutales en Zulia, Portuguesa y Guárico sin tendido eléctrico en los potreros.',
+        bom: '$110 – $230 USD (4 a 8 zonas)',
+        deployTime: '1 – 2 días en campo',
+        businessModel: 'Kit llave en mano ensamblado en Zulia + instalación + soporte',
+        arch: ['Sensores Suelo/Nivel', 'ESP32-S3 Deep-Sleep', 'Driver Válvulas Latching', 'LoRa 915 MHz', 'Panel Web / WhatsApp'],
+        benefits: [
+          '60% más económico que controladores propietarios importados con repuestos locales inmediatos.',
+          'Las válvulas biestables solo consumen energía durante 50 ms al abrir o cerrar.',
+          'Opera offline con programación horaria o por humedad de suelo aunque caiga internet.'
+        ],
+        sources: 'ESP32-S3 Low-Power Irrigation · Latching Solenoid H-Bridge · LoRaWAN 915'
+      },
+      {
+        id: 'ESP-02',
+        cat: 'core',
+        catLabel: '⚡ Core & Tableros ESP32',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Micro-PLC Agro-Industrial de Riel DIN con ESP32-S3 + Modbus RS485',
+        summary: 'Tablero industrial en riel DIN con ESP32-S3, 8 relés optoacoplados de potencia, entradas aisladas 4–20 mA / digitales, puerto RS485 Modbus RTU y protección de voltaje para casas de bombas, galpones y salas de ordeño.',
+        hardware: 'Placa industrial ESP32-S3 Riel DIN (KinCony / PCB propia) + MAX485 aislado + 8 Relés 10A + Entradas 4–20 mA + Reloj RTC DS3231.',
+        venezuelaFit: 'Reemplaza tableros manuales y PLCs de $2,000+ en bombas sumergibles, ventilación avícola/porcina y cuartos de enfriamiento.',
+        bom: '$140 – $340 USD (tablero armado)',
+        deployTime: '2 días',
+        businessModel: 'Integración de tableros eléctricos inteligentes + póliza de mantenimiento',
+        arch: ['Sensores RS485 / 4-20mA', 'ESP32-S3 Riel DIN', 'Relés / Contactores', 'Wi-Fi / Ethernet / LoRa', 'Control Local & Remoto'],
+        benefits: [
+          'Reloj RTC con pila interna y watchdog físico: nunca deja una bomba encendida por fallo.',
+          'Compatible con ESPHome, MQTT y firmware propio en C++/ESP-IDF.',
+          'Fácil diagnóstico y reemplazo de módulo ESP32 en minutos.'
+        ],
+        sources: 'ESP32-S3 Industrial DIN-Rail Controllers · RS485 Modbus RTU Master'
+      },
+      {
+        id: 'ESP-03',
+        cat: 'core',
+        catLabel: '⚡ Core & Tableros ESP32',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Red Mallada Rural ESP32 + LoRa SX1262 (915 MHz) & ESP-NOW',
+        summary: 'Backbone inalámbrico rural 100% ESP32 combinando LoRa SX1262 (5–15 km entre potreros) y ESP-NOW (malla instantánea de ultra-bajo consumo entre módulos cercanos) hacia un gateway ESP32 central.',
+        hardware: 'Nodos Heltec WiFi LoRa 32 V3 / ESP32-S3 + SX1262 (915 MHz) + Antena 5 dBi + Panel 5W + Gateway ESP32 con Ethernet/Wi-Fi/Starlink.',
+        venezuelaFit: 'Elimina la dependencia total de señal Movistar/Digitel/Movilnet y evita pagar rentas mensuales por docenas de tarjetas SIM.',
+        bom: '$30 – $65 USD/nodo · Gateway $120 – $240 USD',
+        deployTime: '1 – 2 días',
+        businessModel: 'Gateway base + venta modular de nodos según crezca la finca',
+        arch: ['Sensores Campo', 'ESP32 + SX1262 915', 'Repetidor Solar / ESP-NOW', 'Gateway ESP32 Casco', 'Alertas & Dashboard'],
+        benefits: [
+          'Banda ISM 915 MHz libre en Venezuela y toda América.',
+          'Un solo gateway ESP32 atiende decenas de sensores de agua, suelo, clima y cercas.',
+          'ESP-NOW permite comunicación directa nodo-a-nodo (ej. tanque → bomba) sin router.'
+        ],
+        sources: 'Semtech SX1262 + ESP32-S3 · Espressif ESP-NOW · ChirpStack LoRaWAN'
+      },
+      {
+        id: 'ESP-04',
+        cat: 'core',
+        catLabel: '⚡ Core & Tableros ESP32',
+        mcu: 'ESP32-S3',
+        origin: 'new',
+        viability: 'inmediata',
+        title: 'AgroBox ESP32 Plug & Play (Caja IP67 + E-Ink + Bot WhatsApp)',
+        summary: 'Producto insignia marca Quantum Nexus: caja estanca IP67 con conectores rápidos aviación (cero soldadura en finca), pantalla E-Ink de diagnóstico visible bajo sol intenso y puente automático de alertas por WhatsApp.',
+        hardware: 'PCB propia ESP32-S3 + SX1262 LoRa + Pantalla E-Ink 2.13" + Conectores IP68 aviación + Cargador solar + Gateway API WhatsApp.',
+        venezuelaFit: 'Los productores venezolanos viven en WhatsApp: recibir "⚠️ Pozo #2 sin flujo" o "🥛 Tanque leche subió a 5.2 °C" logra adopción instantánea.',
+        bom: '$130 – $260 USD por unidad ensamblada',
+        deployTime: 'Instalación en 2 horas',
+        businessModel: 'Hardware propietario Quantum Nexus + suscripción mensual de alertas WhatsApp',
+        arch: ['Sensores Plug&Play', 'AgroBox ESP32 + E-Ink', 'LoRa 915 / Starlink', 'Motor Alertas', 'WhatsApp Productor'],
+        benefits: [
+          'Cualquier encargado cambia un sensor dañado en 30 segundos enroscando el conector.',
+          'La pantalla E-Ink muestra lecturas y estado de batería sin gastar energía.',
+          'Producto estandarizable, escalable y con marca propia de Quantum Nexus C.A.'
+        ],
+        sources: 'Producto Propio Estandarizado · QUANTUM NEXUS C.A.'
+      },
+
+      // 2. CÁMARAS & VISIÓN ARTIFICIAL EDGE AI ESP32
+      {
+        id: 'VIS-01',
+        cat: 'vision',
+        catLabel: '📷 Cámaras Edge AI (ESP32)',
+        mcu: 'ESP32-CAM',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Trampas Inteligentes de Plagas con ESP32-CAM + Edge Impulse',
+        summary: 'Trampas cromáticas o de feromonas con cámara ESP32-CAM solar que captura fotos macro periódicas y ejecuta modelos cuantizados FOMO (Edge Impulse / ESP-DL) para contar insectos (cogollero, mosca blanca, picudo) en el borde.',
+        hardware: 'ESP32-CAM / ESP32-S3 Sense (OV2640/OV5640) + Lente macro + Panel solar 6W + LiFePO4 + Módulo LoRa o Wi-Fi.',
+        venezuelaFit: 'Permite fumigar únicamente los lotes donde se supera el umbral de plaga, ahorrando hasta 60% en insecticidas importados.',
+        bom: '$38 – $80 USD por trampa solar',
+        deployTime: '1 día',
+        businessModel: 'Kit de 5–10 trampas por finca + reporte semanal automático de plagas',
+        arch: ['Trampa Feromona', 'ESP32-CAM Macro', 'FOMO / ESP-DL Local', 'Envío Conteo + Foto', 'Alerta Foco Plaga'],
+        benefits: [
+          'Precio bajísimo que permite distribuir múltiples trampas por toda la hacienda.',
+          'Opera en deep-sleep tomando 2–4 fotos al día (autonomía solar indefinida).',
+          'Evita recorridos manuales diarios bajo sol extremo para revisar trampas.'
+        ],
+        sources: 'Edge Impulse FOMO on ESP32-S3/CAM · Espressif ESP-DL'
+      },
+      {
+        id: 'VIS-02',
+        cat: 'vision',
+        catLabel: '📷 Cámaras Edge AI (ESP32)',
+        mcu: 'ESP32-P4',
+        origin: 'exists',
+        viability: 'alta',
+        title: 'Cámara de Visión HD con ESP32-P4 + ESP32-C6 (ISP + ESP-DL)',
+        summary: 'Estación de visión avanzada 100% Espressif usando ESP32-P4 (dual RISC-V 400 MHz, ISP dedicado, cámara MIPI-CSI 5MP y codificador H.264) junto a ESP32-C6 (Wi-Fi 6) para detectar enfermedades foliares, madurez de fruto o clasificación poscosecha.',
+        hardware: 'ESP32-P4 + Cámara MIPI-CSI 5MP (OV5647/SC2336) + ESP32-C6 (Wi-Fi 6 / Thread) + Pantalla HMI táctil opcional + ESP-DL.',
+        venezuelaFit: 'Sin necesitar Raspberry Pi ni Jetson caros: ideal para mesas clasificadoras de tomate, pimentón, café, cacao e invernaderos tecnificados.',
+        bom: '$85 – $175 USD por estación HD',
+        deployTime: '1 – 2 semanas (entrenamiento de dataset del cultivo)',
+        businessModel: 'Módulo de inspección visual llave en mano + modelos por cultivo',
+        arch: ['Cámara MIPI-CSI 5MP', 'ESP32-P4 ISP + ESP-DL', 'Detección Enfermedad/Madurez', 'ESP32-C6 Wi-Fi 6', 'Clasificador / Reporte'],
+        benefits: [
+          'Procesador de señal de imagen (ISP) y aceleración IA integrados en chip ESP32-P4.',
+          'Procesa todo localmente y transmite solo metadatos JSON o clips cortos H.264.',
+          'Unifica todo el firmware de la empresa bajo el ecosistema ESP-IDF.'
+        ],
+        sources: 'Espressif ESP32-P4 Vision & MIPI-CSI · ESP-DL Neural Accelerator'
+      },
+      {
+        id: 'VIS-03',
+        cat: 'vision',
+        catLabel: '📷 Cámaras Edge AI (ESP32)',
+        mcu: 'ESP32-P4',
+        origin: 'new',
+        viability: 'alta',
+        title: 'Estación Biométrica en Manga con ESP32-P4 + Matriz ToF + Corral X',
+        summary: 'Arco inteligente sobre la manga de trabajo que combina cámara cenital ESP32-P4, sensor de profundidad láser multizona (VL53L5CX ToF) y lector RFID UHF para estimar peso vivo del ganado sin báscula mecánica y cargarlo a Corral X.',
+        hardware: 'ESP32-P4 + Cámara cenital MIPI-CSI + Sensor ToF VL53L5CX (altura dorsal) + Lector RFID 134.2 kHz + ESP32-C6 enlace Corral X.',
+        venezuelaFit: 'Reduce el estrés y merma de peso al pesar ganado y entrega fichas biométricas certificadas para vender lotes a mejor precio en Corral X.',
+        bom: '$220 – $480 USD por arco de manga',
+        deployTime: '2 semanas (calibración por raza local)',
+        businessModel: 'Hardware accesible financiado + integración directa con App Corral X',
+        arch: ['Paso Ganado Manga', 'ESP32-P4 + ToF + RFID', 'Cálculo Biométrico Peso', 'Sync Corral X', 'Lote Certificado P2P'],
+        benefits: [
+          'Costo 3x menor que sistemas basados en Jetson o cámaras industriales importadas.',
+          'Diferenciador estratégico directo que potencia la app Corral X.',
+          'Detecta animales con baja ganancia diaria de peso de forma temprana.'
+        ],
+        sources: 'Propuesta Biométrica ESP32-P4 + ToF · QUANTUM NEXUS / Corral X'
+      },
+      {
+        id: 'VIS-04',
+        cat: 'vision',
+        catLabel: '📷 Cámaras Edge AI (ESP32)',
+        mcu: 'ESP32-P4',
+        origin: 'new',
+        viability: 'inmediata',
+        title: 'Centinela Nocturno Anti-Abigeato ESP32-P4 / S3 IR + Alerta Foto',
+        summary: 'Unidad autónoma solar con visión nocturna infrarroja (o módulo térmico MLX90640) en portones y corrales que ejecuta detección local de personas/vehículos vía ESP-DL en horario restringido, activa sirena/reflector y envía captura comprimida.',
+        hardware: 'ESP32-P4 o ESP32-S3 + Cámara NoIR + Iluminador IR 850nm + Sensor térmico opcional MLX90640 + Relé sirena/foco + LiFePO4 + LoRa/Starlink.',
+        venezuelaFit: 'Ataca directamente el abigeato y hurto nocturno de bombas/cables en Zulia, Barinas y Guárico con altísima intención de compra inmediata.',
+        bom: '$140 – $320 USD por punto crítico',
+        deployTime: '1 – 2 días por finca',
+        businessModel: 'Instalación + servicio mensual de alertas prioritarias a WhatsApp/Telegram',
+        arch: ['Cámara IR + Térmico', 'ESP32 ESP-DL Persona/Vehículo', 'Reflector + Sirena', 'Foto JPEG Comprimida', 'Alerta Dueño & Vigilante'],
+        benefits: [
+          'Filtra falsas alarmas por ramas, viento o animales pequeños.',
+          'Sigue protegiendo durante apagones nocturnos gracias a batería LiFePO4.',
+          'Captura fotográfica ultraligera (15–30 KB) ideal para conexiones rurales lentas.'
+        ],
+        sources: 'ESP32-S3/P4 Edge Security · MLX90640 Thermal + ESP-DL · QUANTUM NEXUS'
+      },
+
+      // 3. SENSORES DE HUMEDAD, TEMPERATURA, SUELO Y CLIMA
+      {
+        id: 'SEN-01',
+        cat: 'sensores',
+        catLabel: '🌡️ Sensores Suelo, Clima & Agua',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Sondas Industriales de Suelo RS485 (Humedad/Temp/CE/NPK) + ESP32',
+        summary: 'Nodos solares ESP32-S3 con transceptor RS485 leyendo sondas enterradas IP68 a 15, 30 y 60 cm (humedad volumétrica, temperatura, salinidad CE y NPK) para regar y fertilizar por necesidad real del cultivo.',
+        hardware: 'ESP32-S3 + MAX485 aislado + Sonda suelo 5-en-1 / 7-en-1 RS485 IP68 + LoRa SX1262 + Panel solar 5W + LiFePO4.',
+        venezuelaFit: 'Ahorra 30–45% de agua, fertilizantes y combustible diésel en arroz, maíz, caña, palma aceitera, plátano y pasturas irrigadas.',
+        bom: '$85 – $210 USD por punto de medición',
+        deployTime: '1 día',
+        businessModel: 'Kits por lote/hectárea + activación automática del nodo de riego ESP-01',
+        arch: ['Sonda RS485 IP68', 'ESP32-S3 Modbus Master', 'LoRa 915 MHz', 'Cálculo Déficit Hídrico', 'Disparo Automático Riego'],
+        benefits: [
+          'Sondas industriales selladas que duran años (sin corrosión como sensores hobby).',
+          'Múltiples profundidades conectadas en cadena sobre un solo bus RS485.',
+          'Evita lavado de fertilizantes por exceso de riego.'
+        ],
+        sources: 'ESP32 Modbus RTU RS485 · Soil Moisture & EC Precision Telemetry'
+      },
+      {
+        id: 'SEN-02',
+        cat: 'sensores',
+        catLabel: '🌡️ Sensores Suelo, Clima & Agua',
+        mcu: 'ESP32-C6',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Estación Meteorológica Agrícola ESP32-C6 (Clima, Lluvia & Viento)',
+        summary: 'Estación microclimática autónoma que mide temperatura, humedad relativa (SHT45), presión (BME280), precipitación acumulada, velocidad/dirección del viento y radiación solar para calcular evapotranspiración (ET₀) y riesgo de hongos.',
+        hardware: 'ESP32-C6 / S3 + SHT45 en escudo solar + BME280 + Pluviómetro balancín + Anemómetro/Veleta RS485 + SX1262 LoRa + Panel 10W.',
+        venezuelaFit: 'En el campo venezolano casi no hay estaciones climáticas confiables: cada finca necesita su historial exacto de lluvia y viento por sector.',
+        bom: '$130 – $310 USD estación completa',
+        deployTime: '1 día',
+        businessModel: 'Venta directa por finca + red meteorológica para asociaciones agrícolas',
+        arch: ['SHT45 + Lluvia + Viento', 'ESP32-C6 Solar', 'Cálculo ET₀ & Rocío', 'LoRa 915 MHz', 'Historial & Alerta Clima'],
+        benefits: [
+          'Calcula ventanas seguras de fumigación evitando deriva por viento fuerte.',
+          'Predice horas de rocío nocturno para prevenir hongos foliares.',
+          'Bajo consumo gracias a la arquitectura RISC-V de ESP32-C6.'
+        ],
+        sources: 'Sensirion SHT45 + Bosch BME280 · ESP32-C6 Weather Station'
+      },
+      {
+        id: 'SEN-03',
+        cat: 'sensores',
+        catLabel: '🌡️ Sensores Suelo, Clima & Agua',
+        mcu: 'ESP32-C6',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Monitor ESP32 de Tanques, Pozos y Bebederos Ganaderos',
+        summary: 'Nodo solar compacto con sensor ultrasónico impermeable o sonda hidrostática 4–20 mA que vigila el nivel de agua en reservorios y bebederos remotos y apaga la bomba por ESP-NOW/LoRa si se llena el tanque o cae el nivel del pozo.',
+        hardware: 'ESP32-C6 / S3 + Sensor ultrasónico IP67 (A02YYUW) o sonda 4–20 mA + SX1262 LoRa 915 MHz + Panel 5W.',
+        venezuelaFit: 'Producto "puerta de entrada" rapidísimo de vender: evita que 300 reses se queden sin agua o que se queme una bomba de $2,500 por trabajar en seco.',
+        bom: '$55 – $140 USD por tanque/bebedero',
+        deployTime: 'Medio día',
+        businessModel: 'Kit económico de entrada para captar clientes y escalar luego a más módulos',
+        arch: ['Sensor Nivel IP67', 'ESP32 Solar Deep-Sleep', 'LoRa / ESP-NOW', 'Corte Seguro Bomba', 'Alerta Nivel Bajo'],
+        benefits: [
+          'Retorno de inversión instantáneo al salvar una sola bomba sumergible.',
+          'Ahorra combustible y tiempo de recorridos diarios en camioneta.',
+          'Instalación en menos de 2 horas con soporte solar autónomo.'
+        ],
+        sources: 'ESP32 Ultrasonic/Hydrostatic Water Trough Telemetry · ESP-NOW Pump Cutoff'
+      },
+      {
+        id: 'SEN-04',
+        cat: 'sensores',
+        catLabel: '🌡️ Sensores Suelo, Clima & Agua',
+        mcu: 'ESP32-S3',
+        origin: 'new',
+        viability: 'alta',
+        title: 'Sonda Multipunto ESP32 para Silos de Granos, Café y Cacao',
+        summary: 'Cable térmico-higrométrico con múltiples sensores DS18B20 + humedad + sensor CO₂ SCD41 conectado a un ESP32-S3 que detecta fermentación, hongos o gorgojos en silos y enciende la ventilación solo cuando el aire exterior es más seco.',
+        hardware: 'ESP32-S3 + Cadena sondas DS18B20 1-Wire blindadas + SHT45 interior/exterior + Sensor CO₂ SCD41 + Relé extractores.',
+        venezuelaFit: 'Productores y centrales de maíz, arroz, sorgo, café y cacao pierden hasta 15–20% de su cosecha almacenada por humedad y puntos calientes.',
+        bom: '$150 – $360 USD por silo/depósito',
+        deployTime: '1 – 2 días',
+        businessModel: 'Kit de protección poscosecha por silo + automatización de aireación',
+        arch: ['Cadena DS18B20 + CO₂', 'ESP32-S3 Punto Rocío', 'Control Extractores', 'Wi-Fi / LoRa', 'Alerta Punto Caliente'],
+        benefits: [
+          'El aumento de CO₂ avisa actividad biológica (hongos/insectos) días antes del daño visible.',
+          'Automatiza el secado comparando humedad interior vs exterior.',
+          'Protege lotes de exportación en café y cacao venezolano.'
+        ],
+        sources: 'ESP32 Grain Silo Multi-Point Monitoring · Sensirion SCD41 CO2'
+      },
+
+      // 4. RIEGO, INVERNADEROS & SIEMBRA INDOOR / HIDROPONÍA
+      {
+        id: 'IND-01',
+        cat: 'indoor',
+        catLabel: '🌱 Riego, Invernaderos & Indoor',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Control Climático de Invernaderos por VPD 100% en ESP32-S3',
+        summary: 'Controlador climático integral sin PC ni Raspberry Pi: el ESP32-S3 lee temperatura/humedad (SHT45), calcula el Déficit de Presión de Vapor (VPD) en tiempo real, aloja su propia interfaz web local y acciona extractores, nebulizadores y mallas sombra mediante PID.',
+        hardware: 'ESP32-S3 + Pantalla táctil/E-Ink local + Sensores SHT45 + Sensor luz BH1750/PAR + Módulo 6 relés SSR + Interruptores manuales respaldo.',
+        venezuelaFit: 'Ideal para casas de cultivo de tomate, pimentón, fresa y lechuga en Andes (Mérida/Trujillo/Táchira), Lara, Miranda y cultivos protegidos en Zulia.',
+        bom: '$160 – $380 USD por nave',
+        deployTime: '2 – 3 días',
+        businessModel: 'Paquete "Invernadero Inteligente ESP32" llave en mano + calibración',
+        arch: ['SHT45 + Luz PAR', 'ESP32-S3 Cálculo VPD/PID', 'Relés Extractores/Fogging', 'Web Local Embebida', 'Gráficas & Alarmas'],
+        benefits: [
+          'Mantener VPD en 0.8–1.5 kPa dispara la transpiración sana y frena hongos foliares.',
+          'Cero dependencia de servidores externos: la interfaz corre dentro del propio ESP32-S3.',
+          'Respaldo con interruptores físicos manuales de emergencia.'
+        ],
+        sources: 'ESP32-S3 Embedded WebServer + PID VPD Greenhouse Automation'
+      },
+      {
+        id: 'IND-02',
+        cat: 'indoor',
+        catLabel: '🌱 Riego, Invernaderos & Indoor',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Cabezal de Fertirriego Hidropónico Automático (pH + EC) con ESP32',
+        summary: 'Estación de dosificación inteligente controlada por ESP32-S3 con sondas de pH y Conductividad Eléctrica (EC) con aislamiento galvánico y 4 bombas peristálticas que mantienen la solución nutritiva exacta 24/7 con watchdog de seguridad.',
+        hardware: 'ESP32-S3 + ADC 16-bit ADS1115 + Aisladores galvánicos pH/EC + Sondas industriales + DS18B20 agua + 4 Bombas peristálticas 12V + MOSFETs.',
+        venezuelaFit: 'Automatiza cultivos hidropónicos NFT/DWC/sustrato para supermercados, restaurantes y productores urbanos ahorrando 90% de agua.',
+        bom: '$240 – $560 USD por cabezal completo',
+        deployTime: '2 – 3 días',
+        businessModel: 'Venta de cabezal fertirriego ESP32 + mantenimiento y calibración de sondas',
+        arch: ['Sondas pH/EC Aisladas', 'ADS1115 + ESP32-S3', 'Lógica Dosis + Mezcla', 'Bombas Peristálticas A/B/pH', 'Tanque Balanceado'],
+        benefits: [
+          'Aislamiento galvánico elimina interferencias eléctricas entre sondas pH y EC.',
+          'Watchdog hardware y límites máximos diarios impiden sobredosificación.',
+          'Ahorra 85–90% de agua y 50% de fertilizantes frente a siembra tradicional.'
+        ],
+        sources: 'ESP32 Isolated pH/EC Hydroponic Dosing · ADS1115 Precision Fertigation'
+      },
+      {
+        id: 'IND-03',
+        cat: 'indoor',
+        catLabel: '🌱 Riego, Invernaderos & Indoor',
+        mcu: 'ESP32-C6',
+        origin: 'exists',
+        viability: 'alta',
+        title: 'Módulo Indoor Vertical & Forraje Verde Hidropónico (FVH) ESP32',
+        summary: 'Estantería o contenedor de siembra indoor gobernado por nodos ESP32-C6 (Wi-Fi 6 / Zigbee): controla fotoperiodos LED por PWM, ciclos de microaspersión, renovación de aire y humedad para producir microgreens o Forraje Verde Hidropónico en 7–10 días.',
+        hardware: 'ESP32-C6 + Drivers PWM LED Full-Spectrum + Microaspersores + SHT45 + Sensor nivel tanque + Bomba presión 12V/24V.',
+        venezuelaFit: 'DOBLE IMPACTO: 1) Forraje verde fresco para ganado en verano/sequía (sinergia directa con clientes Corral X); 2) Hortalizas gourmet urbanas en Maracaibo/Caracas.',
+        bom: '$950 – $3,400 USD (electrónica ESP32 ~$220)',
+        deployTime: '1 – 2 semanas',
+        businessModel: 'Módulos escalables (Rack Piloto, Sala FVH Ganadera, Contenedor Urbano)',
+        arch: ['Bandejas Verticales', 'ESP32-C6 PWM LED + Riego', 'Control Clima VPD', 'Cosecha 7–10 Días', 'Ganado / Mercado'],
+        benefits: [
+          'Produce alimento animal de altísima proteína en pocos metros cuadrados todo el año.',
+          'Control exacto de amanecer/atardecer LED y riego nebulizado sin mano de obra fija.',
+          'Escalable conectando varios racks en malla Zigbee/ESP-NOW.'
+        ],
+        sources: 'ESP32-C6 Controlled Environment Agriculture · Automated Hydroponic Fodder'
+      },
+      {
+        id: 'IND-04',
+        cat: 'indoor',
+        catLabel: '🌱 Riego, Invernaderos & Indoor',
+        mcu: 'ESP32-S3',
+        origin: 'new',
+        viability: 'media',
+        title: 'Semillero Robótico CNC 2-Ejes 100% ESP32-S3 + ESP32-CAM',
+        summary: 'Pórtico cartesiano compacto para semilleros e invernaderos de precisión controlado por ESP32-S3 (firmware FluidNC/GRBL-ESP32) con drivers silenciosos TMC2209 y ESP32-CAM en el cabezal para sembrar, regar planta por planta y verificar germinación.',
+        hardware: 'ESP32-S3 (FluidNC) + Drivers TMC2209 + Motores NEMA 17/23 + Mini electroválvula + Bomba vacío semillas + ESP32-CAM cabezal.',
+        venezuelaFit: 'Vitrina tecnológica de alto impacto para ferias ganaderas/agrícolas, universidades (LUZ/UCLA) y viveros de semillas certificadas.',
+        bom: '$650 – $1,600 USD por cama piloto',
+        deployTime: '2 – 3 semanas',
+        businessModel: 'Demostrador de marca, convenios universitarios y camas de viveros especializados',
+        arch: ['Mapa Bandeja Web', 'ESP32-S3 FluidNC', 'Motores X-Y-Z + Válvula', 'ESP32-CAM Germinación', 'Conteo Plantas Sanas'],
+        benefits: [
+          'Hasta 60% más económico que kits CNC importados al correr nativo en ESP32-S3.',
+          'Demuestra en vivo la capacidad de ingeniería robótica de Quantum Nexus.',
+          'Permite medir porcentaje real de germinación por bandeja automáticamente.'
+        ],
+        sources: 'FluidNC on ESP32-S3 · ESP32-CAM Precision Nursery · Propuesta Quantum Nexus'
+      },
+
+      // 5. SOLUCIONES ENERGÉTICAS RURALES & OFF-GRID
+      {
+        id: 'ENE-01',
+        cat: 'energia',
+        catLabel: '☀️ Energía Solar & Off-Grid ESP32',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Supervisor Inteligente ESP32 Modbus para Bombeo Solar VFD (Sin Baterías)',
+        summary: 'Módulo ESP32-S3 acoplado vía RS485 Modbus RTU al variador de frecuencia (VFD) solar de bombas sumergibles o superficiales: monitorea Hz, corriente, potencia solar, caudal y nivel de pozo, encendiendo/deteniendo el bombeo automáticamente.',
+        hardware: 'ESP32-S3 + MAX485 aislado + Variador VFD Solar (1.5–30 HP) + Paneles PV + Caudalímetro de pulsos + Sensor presión/pozo.',
+        venezuelaFit: 'SOLUCIÓN ESTRELLA EN VENEZUELA: erradica el gasto de diésel y apagones en riego y llenado de tanques con telemetría en el celular del dueño.',
+        bom: '$1,500 – $6,500 USD (módulo supervisor ESP32 $120)',
+        deployTime: '2 – 4 días',
+        businessModel: 'Ingeniería solar llave en mano + valor agregado de telemetría ESP32 incluida',
+        arch: ['Paneles PV → VFD Solar', 'ESP32-S3 Modbus RS485', 'Bomba + Caudalímetro', 'Protección Pozo Seco', 'Reporte Litros/Día'],
+        benefits: [
+          'Sin baterías costosas: los paneles mueven la bomba directo y almacenan agua en tanques.',
+          'El ESP32 registra cuántos miles de litros se bombearon hoy y avisa fallas del motor.',
+          'Se enlaza por LoRa con el monitor de tanque (SEN-03) para parar al llenarse.'
+        ],
+        sources: 'ESP32 Modbus RTU Solar VFD Pump Telemetry · Off-Grid Water Pumping'
+      },
+      {
+        id: 'ENE-02',
+        cat: 'energia',
+        catLabel: '☀️ Energía Solar & Off-Grid ESP32',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Monitor ESP32 para Microredes Solares Híbridas LiFePO4 (BMS + Red)',
+        summary: 'Controlador ESP32-S3 conectado al puerto RS485/CAN del inversor híbrido y del BMS de baterías LiFePO4: supervisa carga (SoC), voltaje de fases Corpoelec/planta eléctrica y desconecta cargas no críticas antes de descargar la batería.',
+        hardware: 'ESP32-S3 + Transceptor CAN/RS485 + Pinzas SCT-013 / PZEM-004T + Relés gestión de cargas + Inversor híbrido + Banco LiFePO4.',
+        venezuelaFit: 'Protege salas de ordeño, tanques de leche, oficinas, Starlink y cámaras ante fallas eléctricas crónicas y picos de voltaje en el Zulia.',
+        bom: '$110 – $220 USD (módulo BMS/Energía ESP32)',
+        deployTime: '1 día (en sistemas nuevos o existentes)',
+        businessModel: 'Instalación sobre inversores existentes + parte estándar de proyectos solares',
+        arch: ['Inversor + BMS LiFePO4', 'ESP32-S3 CAN/RS485', 'Gestión Cargas Críticas', 'Wi-Fi / LoRa', 'Alertas Apagón & SoC'],
+        benefits: [
+          'Alarga la vida útil del banco LiFePO4 evitando descargas profundas.',
+          'Avisa por WhatsApp el minuto exacto en que se va o regresa la luz en la finca.',
+          'Compatible con inversores híbridos comerciales populares en Venezuela (Growatt, Deye, Must).'
+        ],
+        sources: 'ESP32 Solar Inverter & LiFePO4 BMS RS485/CAN Telemetry'
+      },
+      {
+        id: 'ENE-03',
+        cat: 'energia',
+        catLabel: '☀️ Energía Solar & Off-Grid ESP32',
+        mcu: 'ESP32-C6',
+        origin: 'new',
+        viability: 'media',
+        title: 'Telemetría ESP32-C6 para Biodigestores Ganaderos & Biogás',
+        summary: 'Módulo de instrumentación con ESP32-C6 solar que vigila presión de campana, temperatura de digestión anaeróbica, concentración de metano (CH₄) y sulfuro de hidrógeno (H₂S) para producir biogás seguro y biofertilizante (biol) a partir de estiércol.',
+        hardware: 'ESP32-C6 + Sensor presión diferencial MPX + DS18B20 sumergible + Sensor CH₄/H₂S + Electroválvula seguridad + LoRa 915.',
+        venezuelaFit: 'Fincas lecheras y granjas porcinas del Zulia, Barinas y centro del país convierten desechos contaminantes en gas, electricidad y fertilizante gratis.',
+        bom: '$160 – $290 USD (kit telemetría ESP32)',
+        deployTime: '1 día sobre biodigestor',
+        businessModel: 'Alianza con constructores de biodigestores + kit de monitoreo inteligente',
+        arch: ['Biodigestor HDPE', 'Sensores Presión/Temp/CH₄', 'ESP32-C6 Solar', 'Válvula Seguridad', 'Alertas Producción Gas'],
+        benefits: [
+          'Avisa cuando hay que regenerar el filtro de H₂S para no dañar motores/generadores.',
+          'Alerta sobrepresión o caída térmica que frena la digestión bacteriana.',
+          'Agrega capa digital medible a proyectos de economía circular rural.'
+        ],
+        sources: 'ESP32 Anaerobic Biodigester IoT · Circular Rural Energy'
+      },
+
+      // 6. MONITOREO PECUARIO, CADENA DE FRÍO & ACUICULTURA
+      {
+        id: 'MON-01',
+        cat: 'monitoreo',
+        catLabel: '📡 Pecuario, Cadena de Frío & Acuícola',
+        mcu: 'ESP32-S3',
+        origin: 'exists',
+        viability: 'inmediata',
+        title: 'Guardián ESP32 de Tanques de Leche (≤ 4 °C) & Cadena de Frío',
+        summary: 'Monitor autónomo con ESP32-S3, sondas sanitarias PT100/DS18B20, sensor de corriente del compresor y batería de respaldo 24h que envía alerta crítica instantánea si la temperatura sube de 4 °C, se abre la cava o falla el enfriador.',
+        hardware: 'ESP32-S3 + Sonda acero inox grado alimentario PT100 (MAX31865) + Pinza SCT-013 compresor + Batería LiFePO4 24h + Buzzer + Wi-Fi/LoRa.',
+        venezuelaFit: 'VENTA RAPIDÍSIMA EN EL ZULIA (Perijá, Machiques, Sur del Lago): perder un solo tanque de leche por un apagón nocturno cuesta miles de dólares.',
+        bom: '$95 – $210 USD por tanque o cava cuarto',
+        deployTime: '3 – 4 horas',
+        businessModel: 'Venta del equipo + suscripción mensual de alertas y bitácora sanitaria PDF',
+        arch: ['Sonda Sanitaria ≤4°C', 'Pinza Compresor', 'ESP32-S3 + Batería 24h', 'Alarma Local + WhatsApp', 'Registro Sanitario'],
+        benefits: [
+          'Se paga 20 veces la primera noche que salva un tanque de leche o cava de carne.',
+          'Sirve igual para neveras de vacunas bovinas, queseras y cuartos fríos de frutas.',
+          'Registra temperaturas históricas para auditorías de calidad de plantas lácteas.'
+        ],
+        sources: 'ESP32 Cold Chain & Bulk Milk Tank Telemetry · MAX31865 PT100'
+      },
+      {
+        id: 'MON-02',
+        cat: 'monitoreo',
+        catLabel: '📡 Pecuario, Cadena de Frío & Acuícola',
+        mcu: 'ESP32-C6',
+        origin: 'new',
+        viability: 'inmediata',
+        title: 'Monitor de Cercas Eléctricas Anti-Corte con ESP32 + LoRa 915 MHz',
+        summary: 'Sensor no invasivo acoplado al alambre electrificado de cada potrero que mide la amplitud de los pulsos de alto voltaje (kV) con ESP32 + LoRa y avisa en segundos qué sector exacto sufrió corte por abigeato o rama caída.',
+        hardware: 'ESP32-C6 / S3 + Divisor capacitivo aislado alto voltaje + SX1262 LoRa 915 MHz + Panel solar 5W + Carcasa IP67.',
+        venezuelaFit: 'Un ganadero puede tener 30 km de cerca eléctrica: saber al minuto exacto dónde cayó el voltaje evita fuga de ganado y robos nocturnos.',
+        bom: '$65 – $135 USD por sector/potrero',
+        deployTime: 'Medio día',
+        businessModel: 'Kit de 4–8 nodos perimetrales integrados al mismo gateway de la finca',
+        arch: ['Pulso Cerca (5–10 kV)', 'Sensor Aislado + ESP32', 'LoRa 915 MHz', 'Mapa Sector Afectado', 'Alerta Corte WhatsApp'],
+        benefits: [
+          'Aislamiento seguro sin dañar la electrónica por los pulsos de alto voltaje.',
+          'Identifica si es caída total (corte/apagón) o fuga parcial (maleza tocando alambre).',
+          'Bajísimo costo por kilómetro monitoreado frente a patrullaje físico.'
+        ],
+        sources: 'Smart Electric Fence Voltage Telemetry · Propuesta Quantum Nexus C.A.'
+      },
+      {
+        id: 'MON-03',
+        cat: 'monitoreo',
+        catLabel: '📡 Pecuario, Cadena de Frío & Acuícola',
+        mcu: 'ESP32-S3',
+        origin: 'new',
+        viability: 'inmediata',
+        title: 'Boya Solar Acuícola ESP32-S3 RS485 (Camarón, Cachama & Tilapia)',
+        summary: 'Estación flotante o de muelle solar con ESP32-S3 midiendo Oxígeno Disuelto (DO), pH, temperatura y salinidad vía RS485 Modbus, encendiendo automáticamente los aireadores antes de una caída crítica nocturna de oxígeno.',
+        hardware: 'ESP32-S3 + Sonda óptica/galvánica Oxígeno Disuelto RS485 + Sonda pH/Temp + SX1262 LoRa 915 + Relé aireadores + Panel solar 15W.',
+        venezuelaFit: 'El Estado Zulia es potencia camaronera y piscícola: una hipoxia de madrugada puede matar toda la biomasa de una piscina en menos de 2 horas.',
+        bom: '$360 – $950 USD por piscina/laguna (según sonda DO)',
+        deployTime: '1 – 2 días',
+        businessModel: 'Instalación por piscina/módulo + mantenimiento de calibración trimestral',
+        arch: ['Sondas DO / pH / Temp', 'ESP32-S3 Solar Boya', 'LoRa → Tablero Aireador', 'Encendido Preventivo', 'Dashboard Acuícola'],
+        benefits: [
+          'Enciende aireadores solo cuando baja el oxígeno real, ahorrando fuerte en diésel/luz.',
+          'Ataca un mercado de altísimo poder de inversión justo en nuestra sede (Zulia).',
+          'Totalmente escalable a múltiples piscinas desde un solo gateway ESP32.'
+        ],
+        sources: 'ESP32 RS485 Aquaculture Dissolved Oxygen Telemetry · Propuesta Zulia Quantum Nexus'
+      }
+    ];
+
+    const QUICK_WINS_IDS = ['ESP-01', 'ESP-03', 'ESP-04', 'VIS-01', 'VIS-04', 'SEN-03', 'IND-01', 'ENE-01', 'MON-01', 'MON-02'];
+    const STORAGE_KEY = 'qn_esp32_selected_ideas_v2';
+    const NOTES_KEY = 'qn_esp32_notes_v2';
+
+    let selectedIds = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+    let notesMap = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
+    let currentView = 'catalog';
+    let currentCat = 'all';
+    let onlySelected = false;
+    let currentSlideIdx = 0;
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...selectedIds]));
+      localStorage.setItem(NOTES_KEY, JSON.stringify(notesMap));
+      updateSelectionCounters();
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function getFilteredIdeas() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const mcu = document.getElementById('mcuFilter').value;
+      const origin = document.getElementById('originFilter').value;
+      const viability = document.getElementById('viabilityFilter').value;
+      return IDEAS.filter(item => {
+        if (currentCat !== 'all' && item.cat !== currentCat) return false;
+        if (mcu !== 'all' && item.mcu !== mcu) return false;
+        if (origin !== 'all' && item.origin !== origin) return false;
+        if (viability !== 'all' && item.viability !== viability) return false;
+        if (onlySelected && !selectedIds.has(item.id)) return false;
+        if (q) {
+          const hay = [item.id, item.mcu, item.title, item.summary, item.hardware, item.venezuelaFit, item.catLabel, ...item.benefits].join(' ').toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function viabilityLabel(v) {
+      if (v === 'inmediata') return { text: 'Viabilidad Inmediata', cls: 'tag-high' };
+      if (v === 'alta') return { text: 'Viabilidad Alta', cls: 'tag-high' };
+      return { text: 'Viabilidad Media', cls: 'tag-med' };
+    }
+
+    function aiRoleFor(item) {
+      const byCat = {
+        core: 'Agentes de IA orquestan reglas predictivas, priorizan alertas críticas a WhatsApp y ajustan ciclos de riego/actuadores según histórico y clima.',
+        vision: 'Redes neuronales Edge AI (ESP-DL / Edge Impulse FOMO) procesan imágenes localmente en el chip ESP32 para detectar plagas, enfermedades, peso o intrusos sin falsas alarmas.',
+        sensores: 'Modelos predictivos de IA analizan series temporales de suelo, clima, tanques y silos para anticipar estrés hídrico, hongos o fugas antes de que ocurran pérdidas.',
+        indoor: 'Algoritmos de IA optimizan continuamente el microclima VPD, fotoperiodos LED y dosificación pH/EC aprendiendo la curva de respuesta de cada cultivo.',
+        energia: 'IA de gestión energética pronostica generación solar, optimiza horas de bombeo VFD y detecta degradación o sobrecargas en bancos LiFePO4 y biodigestores.',
+        monitoreo: 'Detección de anomalías por IA anticipa fallas térmicas en tanques de leche (≤ 4 °C), distingue cortes de cercas por abigeato y previene hipoxia nocturna en lagunas.'
+      };
+      return byCat[item.cat] || 'Automatización supervisada por Inteligencia Artificial sobre controladores ESP32.';
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById('ideasGrid');
+      const items = getFilteredIdeas();
+      document.getElementById('visibleCount').textContent = items.length;
+
+      if (!items.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1; padding:2.5rem; text-align:center; background:var(--bg-surface); border:2px dashed var(--border-color); font-family:var(--font-mono);">No hay soluciones ESP32 que coincidan con los filtros actuales. Prueba limpiar la búsqueda.</div>`;
+        return;
+      }
+
+      grid.innerHTML = items.map(item => {
+        const isSel = selectedIds.has(item.id);
+        const v = viabilityLabel(item.viability);
+        return `
+          <article class="idea-card ${isSel ? 'selected' : ''}" data-id="${item.id}">
+            <div class="card-head">
+              <span class="card-code">${item.id}</span>
+              <div class="card-badges">
+                <span class="tag tag-mcu">⚡ ${item.mcu}</span>
+                <span class="tag ${item.origin === 'exists' ? 'tag-exists' : 'tag-new'}">${item.origin === 'exists' ? 'Probada' : 'Nueva QN'}</span>
+                <span class="tag ${v.cls}">${v.text}</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card-cat">${item.catLabel}</div>
+              <h3 class="card-title">${item.title}</h3>
+              <p class="card-summary">${item.summary}</p>
+              <div class="hw-line"><strong>ESP32 HW:</strong> ${item.hardware}</div>
+              <div class="card-meta-grid">
+                <div class="meta-box">
+                  <span class="meta-k">Costo Ref. Hardware</span>
+                  <span class="meta-v">${item.bom}</span>
+                </div>
+                <div class="meta-box">
+                  <span class="meta-k">Despliegue Est.</span>
+                  <span class="meta-v">${item.deployTime}</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-foot">
+              <button type="button" class="select-toggle ${isSel ? 'is-selected' : ''}" data-action="toggle" data-id="${item.id}">
+                ${isSel ? '✓ ELEGIDA PARA LA WEB' : '+ Seleccionar para Web'}
+              </button>
+              <button type="button" class="btn btn-sm" data-action="detail" data-id="${item.id}">Ver Ficha →</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function renderSlide() {
+      const item = IDEAS[currentSlideIdx];
+      const isSel = selectedIds.has(item.id);
+      const v = viabilityLabel(item.viability);
+      document.getElementById('slideHeaderCode').textContent = `SLIDE ${String(currentSlideIdx + 1).padStart(2, '0')} / ${IDEAS.length} · ${item.id} [${item.mcu}] · QUANTUM NEXUS C.A. (RIF: J-508019512)`;
+      document.getElementById('slideHeaderCat').textContent = item.catLabel;
+      document.getElementById('slideProgress').textContent = `${currentSlideIdx + 1} / ${IDEAS.length} · Navega con flechas ← →`;
+
+      const selBtn = document.getElementById('slideSelectBtn');
+      selBtn.textContent = isSel ? '✓ Elegida para Servicios (Quitar)' : '+ Seleccionar para Servicios';
+      selBtn.className = isSel ? 'btn btn-active btn-sm' : 'btn btn-primary btn-sm';
+
+      document.getElementById('slideContent').innerHTML = `
+        <div>
+          <div style="display:flex; gap:0.45rem; flex-wrap:wrap; margin-bottom:0.5rem;">
+            <span class="tag tag-mcu">⚡ CONTROLADOR: ${item.mcu}</span>
+            <span class="tag ${item.origin === 'exists' ? 'tag-exists' : 'tag-new'}">${item.origin === 'exists' ? 'Arquitectura Probada' : 'Propuesta Innovadora Quantum Nexus'}</span>
+            <span class="tag ${v.cls}">${v.text}</span>
+          </div>
+          <h2 class="slide-title">${item.title}</h2>
+          <p style="font-size:0.96rem; color:var(--ink-secondary); margin-bottom:0.85rem;">${item.summary}</p>
+          <div style="padding:0.8rem 1rem; background:var(--green-light); border-left:4px solid var(--green-primary); font-size:0.88rem;">
+            <strong style="color:var(--green-primary); font-family:var(--font-mono); font-size:0.74rem; display:block; margin-bottom:3px;">IMPACTO EN VENEZUELA / ZULIA:</strong>
+            ${item.venezuelaFit}
+          </div>
+          <ul class="slide-bullets">
+            ${item.benefits.map(b => `<li><span>${b}</span></li>`).join('')}
+          </ul>
+        </div>
+        <div class="slide-arch-box">
+          <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:700; color:var(--green-primary);">ARQUITECTURA DE FLUJO ESP32</div>
+          <div class="arch-diagram">
+            ${item.arch.map((n, i) => `<div class="arch-node">${n}</div>${i < item.arch.length - 1 ? '<span class="arch-arrow">→</span>' : ''}`).join('')}
+          </div>
+          <div class="detail-box" style="border-left:4px solid var(--green-primary); background:var(--green-light);">
+            <h4>🧠 Rol de la Inteligencia Artificial</h4>
+            <p style="color:var(--ink-primary);">${aiRoleFor(item)}</p>
+          </div>
+          <div class="detail-box">
+            <h4>Hardware y Stack ESP32</h4>
+            <p>${item.hardware}</p>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-box">
+              <h4>Costo Ref. (BOM)</h4>
+              <p style="font-family:var(--font-mono); font-weight:700; color:var(--ink-primary);">${item.bom}</p>
+            </div>
+            <div class="detail-box">
+              <h4>Tiempo de Despliegue</h4>
+              <p style="font-family:var(--font-mono); font-weight:700; color:var(--ink-primary);">${item.deployTime}</p>
+            </div>
+          </div>
+          <div class="detail-box">
+            <h4>Modelo Comercial Sugerido</h4>
+            <p>${item.businessModel}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMatrix() {
+      const quads = [
+        {
+          title: '🚀 Quick Wins ESP32 Inmediatos (Vender ya)',
+          badge: 'Alto impacto · Baja fricción',
+          items: IDEAS.filter(i => i.viability === 'inmediata' && i.origin === 'exists')
+        },
+        {
+          title: '⭐ Diferenciadores Propios ESP32 (Alta Tracción)',
+          badge: 'Innovación Quantum Nexus',
+          items: IDEAS.filter(i => (i.viability === 'inmediata' || i.viability === 'alta') && i.origin === 'new')
+        },
+        {
+          title: '📈 Expansión Corto Plazo (ESP32-P4 & Indoor)',
+          badge: 'Alto margen · Especializado',
+          items: IDEAS.filter(i => i.viability === 'alta' && i.origin === 'exists')
+        },
+        {
+          title: '🔬 Proyectos Vitrina & R&D Especial',
+          badge: 'Prestigio · Proyectos a medida',
+          items: IDEAS.filter(i => i.viability === 'media')
+        }
+      ];
+
+      document.getElementById('quadGrid').innerHTML = quads.map(q => `
+        <div class="quad-box">
+          <div class="quad-head">
+            <h3 class="quad-title">${q.title}</h3>
+            <span class="pill pill-green">${q.badge}</span>
+          </div>
+          <div class="quad-list">
+            ${q.items.map(it => {
+              const sel = selectedIds.has(it.id);
+              return `
+                <div class="quad-item" data-action="detail" data-id="${it.id}">
+                  <div>
+                    <strong style="font-family:var(--font-mono); font-size:0.72rem; color:var(--green-primary);">${it.id} [${it.mcu}]</strong> ·
+                    <span>${it.title}</span>
+                    <div style="font-family:var(--font-mono); font-size:0.68rem; color:var(--ink-tertiary);">${it.bom} · ${it.deployTime}</div>
+                  </div>
+                  <button type="button" class="btn btn-sm ${sel ? 'btn-primary' : ''}" data-action="toggle" data-id="${it.id}">
+                    ${sel ? '✓ Elegida' : '+ Elegir'}
+                  </button>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openDetailModal(id) {
+      const item = IDEAS.find(i => i.id === id);
+      if (!item) return;
+      const isSel = selectedIds.has(item.id);
+      document.getElementById('detailCode').textContent = `${item.id} · MCU: ${item.mcu} · ${item.catLabel}`;
+      document.getElementById('detailTitle').textContent = item.title;
+      document.getElementById('detailBomNote').textContent = `Referencia: ${item.sources}`;
+
+      const toggleBtn = document.getElementById('detailToggleSelectBtn');
+      toggleBtn.textContent = isSel ? '✓ Seleccionada para la Web (Quitar)' : '+ Agregar a Servicios de la Web';
+      toggleBtn.onclick = () => {
+        toggleSelect(item.id);
+        openDetailModal(item.id);
+      };
+
+      const savedNote = notesMap[item.id] || '';
+      document.getElementById('detailBody').innerHTML = `
+        <p style="font-size:0.94rem; color:var(--ink-secondary);">${item.summary}</p>
+        <div>
+          <div style="font-family:var(--font-mono); font-size:0.72rem; font-weight:700; color:var(--green-primary); margin-bottom:0.4rem;">FLUJO DE ARQUITECTURA (${item.mcu})</div>
+          <div class="arch-diagram">
+            ${item.arch.map((n, i) => `<div class="arch-node">${n}</div>${i < item.arch.length - 1 ? '<span class="arch-arrow">→</span>' : ''}`).join('')}
+          </div>
+        </div>
+        <div class="detail-box" style="border-left:4px solid var(--green-primary); background:var(--green-light);">
+          <h4>🧠 Automatización Manejada por Inteligencia Artificial</h4>
+          <p style="color:var(--ink-primary);">${aiRoleFor(item)}</p>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-box">
+            <h4>Hardware y Componentes ESP32</h4>
+            <p>${item.hardware}</p>
+          </div>
+          <div class="detail-box">
+            <h4>Ajuste al Campo Venezolano</h4>
+            <p>${item.venezuelaFit}</p>
+          </div>
+          <div class="detail-box">
+            <h4>Costo BOM & Despliegue</h4>
+            <p><strong>${item.bom}</strong><br>Despliegue estimado: ${item.deployTime}</p>
+          </div>
+          <div class="detail-box">
+            <h4>Modelo de Negocio</h4>
+            <p>${item.businessModel}</p>
+          </div>
+        </div>
+        <div class="detail-box">
+          <h4>Ventajas Clave</h4>
+          <ul>${item.benefits.map(b => `<li>${b}</li>`).join('')}</ul>
+        </div>
+        <div class="detail-box">
+          <h4>Tu Nota Personal (Se incluye al exportar)</h4>
+          <input type="text" id="detailNoteInput" class="note-input" value="${savedNote.replace(/"/g, '&quot;')}" placeholder="Ej. Incluir como paquete destacado en Zulia...">
+        </div>
+      `;
+
+      const noteEl = document.getElementById('detailNoteInput');
+      noteEl.addEventListener('input', () => {
+        if (noteEl.value.trim()) notesMap[item.id] = noteEl.value.trim();
+        else delete notesMap[item.id];
+        saveState();
+      });
+
+      const modal = document.getElementById('detailModal');
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function toggleSelect(id) {
+      if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+        showToast(`Quitada de tu selección (${id})`);
+      } else {
+        selectedIds.add(id);
+        showToast(`✓ Agregada a tu selección (${id})`);
+      }
+      saveState();
+      renderCatalog();
+      renderSlide();
+      renderMatrix();
+    }
+
+    function updateSelectionCounters() {
+      const count = selectedIds.size;
+      document.getElementById('selectedCountTop').textContent = count;
+      document.getElementById('selectedCountBar').textContent = count;
+      const preview = document.getElementById('selectedPreviewText');
+      if (count === 0) {
+        preview.textContent = 'Haz clic en "+ Seleccionar" en cualquier tarjeta para armar tu portafolio.';
+      } else {
+        const names = [...selectedIds].map(id => IDEAS.find(i => i.id === id)?.id).filter(Boolean).join(', ');
+        preview.textContent = `Elegidas: ${names}`;
+      }
+    }
+
+    function buildExportMarkdown() {
+      const chosen = IDEAS.filter(i => selectedIds.has(i.id));
+      if (!chosen.length) {
+        return '# Selección de Servicios 100% ESP32 · QUANTUM NEXUS C.A. (RIF: J-508019512)\n\nTodavía no has seleccionado ninguna solución. Marca las soluciones que te parezcan viables y vuelve a abrir este panel.';
+      }
+      let md = `# Servicios AgroTech 100% ESP32 Seleccionados para la Web\n`;
+      md += `**Empresa:** QUANTUM NEXUS C.A. · **RIF:** J-508019512\n`;
+      md += `**Total seleccionados:** ${chosen.length} soluciones\n\n`;
+      chosen.forEach((it, idx) => {
+        md += `## ${idx + 1}. [${it.id} · ${it.mcu}] ${it.title}\n`;
+        md += `- **Categoría:** ${it.catLabel}\n`;
+        md += `- **Tipo:** ${it.origin === 'exists' ? 'Arquitectura Probada' : 'Propuesta Nueva Quantum Nexus'}\n`;
+        md += `- **Hardware ESP32:** ${it.hardware}\n`;
+        md += `- **Costo ref. BOM:** ${it.bom} | **Despliegue:** ${it.deployTime}\n`;
+        md += `- **Modelo comercial:** ${it.businessModel}\n`;
+        if (notesMap[it.id]) md += `- **Mi nota:** ${notesMap[it.id]}\n`;
+        md += `\n`;
+      });
+      return md;
+    }
+
+    function openExportModal() {
+      document.getElementById('exportOutput').value = buildExportMarkdown();
+      const modal = document.getElementById('exportModal');
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll('.mode-tabs .btn').forEach(b => {
+        b.classList.toggle('btn-active', b.dataset.view === view);
+      });
+      document.getElementById('catalogView').classList.toggle('hidden', view !== 'catalog');
+      document.getElementById('slidesView').classList.toggle('active', view === 'slides');
+      document.getElementById('matrixView').classList.toggle('active', view === 'matrix');
+      if (view === 'slides') renderSlide();
+      if (view === 'matrix') renderMatrix();
+    }
+
+    // Event Delegation
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('[data-action]');
+      if (target) {
+        const action = target.dataset.action;
+        const id = target.dataset.id;
+        if (action === 'toggle') {
+          e.stopPropagation();
+          toggleSelect(id);
+        } else if (action === 'detail') {
+          openDetailModal(id);
+        }
+      }
+    });
+
+    document.querySelectorAll('.mode-tabs .btn').forEach(btn => {
+      btn.addEventListener('click', () => switchView(btn.dataset.view));
+    });
+
+    document.getElementById('catChips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.cat-chip');
+      if (!chip) return;
+      currentCat = chip.dataset.cat;
+      document.querySelectorAll('.cat-chip').forEach(c => c.classList.toggle('active', c === chip));
+      renderCatalog();
+    });
+
+    ['searchInput', 'mcuFilter', 'originFilter', 'viabilityFilter'].forEach(id => {
+      document.getElementById(id).addEventListener('input', renderCatalog);
+      document.getElementById(id).addEventListener('change', renderCatalog);
+    });
+
+    document.getElementById('onlySelectedBtn').addEventListener('click', (e) => {
+      onlySelected = !onlySelected;
+      e.currentTarget.classList.toggle('btn-active', onlySelected);
+      renderCatalog();
+    });
+
+    document.getElementById('prevSlideBtn').addEventListener('click', () => {
+      currentSlideIdx = (currentSlideIdx - 1 + IDEAS.length) % IDEAS.length;
+      renderSlide();
+    });
+    document.getElementById('nextSlideBtn').addEventListener('click', () => {
+      currentSlideIdx = (currentSlideIdx + 1) % IDEAS.length;
+      renderSlide();
+    });
+    document.getElementById('slideSelectBtn').addEventListener('click', () => {
+      toggleSelect(IDEAS[currentSlideIdx].id);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal('detailModal');
+        closeModal('exportModal');
+      }
+      if (currentView === 'slides' && !document.querySelector('.modal.open')) {
+        if (e.key === 'ArrowRight') {
+          currentSlideIdx = (currentSlideIdx + 1) % IDEAS.length;
+          renderSlide();
+        } else if (e.key === 'ArrowLeft') {
+          currentSlideIdx = (currentSlideIdx - 1 + IDEAS.length) % IDEAS.length;
+          renderSlide();
+        }
+      }
+    });
+
+    document.getElementById('openSelectionBtn').addEventListener('click', openExportModal);
+    document.getElementById('exportSelectionBtn').addEventListener('click', openExportModal);
+    document.getElementById('closeDetailBtn').addEventListener('click', () => closeModal('detailModal'));
+    document.getElementById('closeExportBtn').addEventListener('click', () => closeModal('exportModal'));
+    document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target.id === 'detailModal') closeModal('detailModal'); });
+    document.getElementById('exportModal').addEventListener('click', (e) => { if (e.target.id === 'exportModal') closeModal('exportModal'); });
+
+    document.getElementById('quickSelectTopBtn').addEventListener('click', () => {
+      QUICK_WINS_IDS.slice(0, 6).forEach(id => selectedIds.add(id));
+      saveState();
+      renderCatalog();
+      renderSlide();
+      renderMatrix();
+      showToast('⚡ Top 6 soluciones ESP32 agregadas');
+    });
+
+    document.getElementById('clearSelectionBtn').addEventListener('click', () => {
+      selectedIds.clear();
+      saveState();
+      renderCatalog();
+      renderSlide();
+      renderMatrix();
+      document.getElementById('exportOutput').value = buildExportMarkdown();
+      showToast('Selección vaciada');
+    });
+
+    document.getElementById('copySelectionBtn').addEventListener('click', async () => {
+      const txt = document.getElementById('exportOutput').value;
+      try {
+        await navigator.clipboard.writeText(txt);
+        showToast('✓ Selección copiada al portapapeles');
+      } catch {
+        document.getElementById('exportOutput').select();
+        document.execCommand('copy');
+        showToast('✓ Selección copiada');
+      }
+    });
+
+    document.getElementById('downloadMdBtn').addEventListener('click', () => {
+      const blob = new Blob([document.getElementById('exportOutput').value], { type: 'text/markdown;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'servicios-esp32-quantum-nexus.md';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    // Theme sync with main site
+    const savedTheme = localStorage.getItem('agrotech_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeBtn').addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('agrotech_theme', next);
+    });
+
+    // Dynamic stats
+    document.getElementById('statTotal').textContent = IDEAS.length;
+    document.getElementById('statExisting').textContent = IDEAS.filter(i => i.origin === 'exists').length;
+    document.getElementById('statNew').textContent = IDEAS.filter(i => i.origin === 'new').length;
+    document.getElementById('statQuickWins').textContent = IDEAS.filter(i => i.viability === 'inmediata').length;
+
+    updateSelectionCounters();
+    renderCatalog();
+  </script>
+</body>
+</html>
